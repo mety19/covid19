@@ -1,30 +1,8 @@
-# -*- coding: utf-8 -*-
-"""
-Spyder Editor
-
-This is a temporary script file.
-"""
-
-#import pandas as pd
-#import numpy as np
-#import seaborn as sns
-#import matplotlib.pyplot as plt
-#
-#amd = pd.read_csv('C:/Users/Emma/Downloads/genelevel_rsem_expectedcounts_byrid.matrix.tsv',delimiter='\t',encoding='utf-8', header=1)
-#amd = np.transpose(amd)
-#print(amd.head())
-
-#from flask import Flask
-#server = Flask('covidapp')
-
-
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 import plotly.graph_objects as go
-
-#app = dash.react.Dash('dash app name', server=server)
 
 app = dash.Dash()
 
@@ -99,5 +77,4 @@ app.layout = html.Div(children=[
 ])
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
-    #app.server.run()
+    app.run_server()
