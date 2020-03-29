@@ -4,7 +4,9 @@ import dash_html_components as html
 import pandas as pd
 import plotly.graph_objects as go
 
-app = dash.Dash()
+#app = dash.react.Dash('dash app name', server=server)
+
+
 
 urlus = 'https://covidtracking.com/api/us/daily.csv'
 urlst = 'https://covidtracking.com/api/states/daily.csv'
@@ -39,16 +41,21 @@ indexNamesArr = NYnewtests.index.values
 datest = pd.to_datetime(list(indexNamesArr))
 
 
-#external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 
 
 app.layout = html.Div(children=[
-    html.H1(children='COVID-19 CASE TRACKING'),
+
+    html.H1(children='US COVID19 CASE TRACKING'),
 
     html.Div(children='''
         US and NY Positive Test Rates and New Cases
     '''),
+#             
+             
 
     dcc.Graph(
         id='rates',
