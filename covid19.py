@@ -1,8 +1,8 @@
+import os
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
-import plotly.graph_objects as go
 
 ''' PREPARE DATA '''
 
@@ -39,9 +39,12 @@ Incremental = ['Date', 'states', 'totalTestResultsIncrease', 'positiveIncrease',
 
 
 ''' APP '''
+server = flask.Flask(__name__)
+server.secret_key = os.environ.get('secret_key', str(randint(0, 1000000)))
+
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets, server=server)
 
 app.css.append_css({'external_url': 'https://codepen.io/amyoshino/pen/jzXypZ.css'})
 
@@ -300,5 +303,5 @@ def update_graph_src(statesel, cumulincr):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
-    #app.server.run()
+    #app.run_server(debug=True)
+    app.server.run(debug=True, threaded=True)
