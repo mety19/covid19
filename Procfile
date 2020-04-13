@@ -1,1 +1,1 @@
-web: gunicorn covid19:covid19usny
+web: python covid19.py
