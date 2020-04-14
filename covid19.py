@@ -8,10 +8,11 @@ import pandas as pd
 # Read data from https://covidtracking.com/ 
 urlus = 'https://covidtracking.com/api/us/daily.csv'
 urlst = 'https://covidtracking.com/api/states/daily.csv'
+urlpop = 'https://github.com/mety19/covid19/raw/master/uspopulation.csv'
 covus = pd.read_csv(urlus)
 covus.loc[covus['states']>1,'states'] = 'US'
 covst = pd.read_csv(urlst)
-#uspop = pd.read_csv('C:/Users/Emma/Box/Data/uspopulation.csv')
+uspop = pd.read_csv(urlpop)#('C:/Users/Emma/Box/Data/uspopulation.csv')
 
 # The US data does not have a fips column, we add fips = 0
 covus['fips'] = 0
@@ -33,12 +34,12 @@ covall = covus.append(covst, sort=False)
 covall['Date'] = pd.to_datetime(covall['dateChecked'])
 
 # Merge with population data and get state list
-#covall = pd.merge(covall, uspop, on='states')
+covall = pd.merge(covall, uspop, on='states')
 statesall = covall['states'].unique()
 
 # cumulative and incremental columns
-#Cumulative = ['Date', 'states', 'totalTestResults', 'positive', 'hospitalized', 'death', 'total', 'population2019']
-#Incremental = ['Date', 'states', 'totalTestResultsIncrease', 'positiveIncrease', 'hospitalizedIncrease', 'deathIncrease', 'total', 'population2019']
+Cumulative = ['Date', 'states', 'totalTestResults', 'positive', 'hospitalized', 'death', 'total', 'population2019']
+Incremental = ['Date', 'states', 'totalTestResultsIncrease', 'positiveIncrease', 'hospitalizedIncrease', 'deathIncrease', 'total', 'population2019']
 
 
 ''' APP '''
