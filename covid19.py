@@ -115,7 +115,25 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     style={'margin-top': '20'}
             )
         ], className="row"
-    )
+    ),
+
+    html.Div([
+            html.P('For questions or comments contact'
+                           , style={
+                                        'textAlign': 'center',
+                                        'color': '#DFD9D9'
+                                    }),
+            html.P('Jeffrey S Morris - jeffrey.morris@pennmedicine.upenn.edu'
+                           , style={
+                                        'textAlign': 'center',
+                                        'color': '#DFD9D9'
+                                    }),
+            html.P('Emma Zohner - emma.zohner@rice.edu'
+                           , style={
+                                        'textAlign': 'center',
+                                        'color': '#DFD9D9'
+                                    })
+            ], className="row", style={'margin-top': '20'})
 ])
 
 if __name__ == '__main__':
