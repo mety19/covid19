@@ -112,7 +112,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     value='Cumulative'
                     )  
             ],
-            className='one columns',
+            className='two columns',
                     style={'margin-top': '20'}
             ),
         html.Div([
@@ -127,12 +127,82 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     value='Raw'
                     )  
             ],
-            className='two columns',
+            className='one columns',
                     style={'margin-top': '20'}
             )
         ], className="row"
     ),
    
+  html.Div([
+        html.Div([
+            dcc.Graph(
+                id='tests',
+                figure={
+                    'data': [],
+                    'layout': {
+                        'title': 'Tests Given Per Day',
+                        'plot_bgcolor': '2A2828',#colors['background'],
+                        'paper_bgcolor': '2A2828',
+                        'font': {
+                            'color': colors['text']
+                        }
+                    }
+                }
+            )
+        ], className = "six columns"),
+        html.Div([
+            dcc.Graph(
+                id='positive',
+                figure={
+                    'data': [],
+                    'layout': {
+                        'title': 'Positive Tests Per Day',
+                        'plot_bgcolor': '2A2828',
+                        'paper_bgcolor': '2A2828',
+                        'font': {
+                            'color': colors['text'],
+                        }
+                    }
+                }
+            )
+        ], className = "six columns")
+        
+    ], className = "row"),
+
+    html.Div([
+        html.Div([
+            dcc.Graph(
+                id='hospitalized',
+                figure={
+                    'data': [],
+                    'layout': {
+                        'title': 'Hospitalized Patients Per Day',
+                        'plot_bgcolor': '2A2828',
+                        'paper_bgcolor': '2A2828',
+                        'font': {
+                            'color': colors['text']
+                        }
+                    }
+                }
+            )
+        ], className = "six columns"),
+        html.Div([
+            dcc.Graph(
+                id='death',
+                figure={
+                    'data': [],
+                    'layout': {
+                        'title': 'Deaths Per Day',
+                        'plot_bgcolor': '2A2828',
+                        'paper_bgcolor': '2A2828',
+                        'font': {
+                            'color': colors['text']
+                        }
+                    }
+                }
+            )
+        ], className = "six columns")
+    ], className = "row", style={'margin-top': '20'}),
 
     html.Div([
             html.P('For questions or comments contact'
