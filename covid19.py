@@ -2,7 +2,6 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
-import numpy as np
 
 ''' PREPARE DATA '''
 
@@ -95,7 +94,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     multi=True
                     )  
                 ],
-                className='five columns',
+                className='four columns',
                         style={'margin-top': '20'}
                 ),
         html.Div([
@@ -112,22 +111,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     value='Cumulative'
                     )  
             ],
-            className='one columns',
-                    style={'margin-top': '20'}
-            ),
-        html.Div([
-            html.P('Scale:', style = {'backgroundcolor': '#060606', 'color': '#FEFCFC'}),
-            dcc.RadioItems(
-                    id = 'Scale',
-                    options=[
-                        {'label': 'Raw', 'value': 'Raw'},
-                        {'label': 'Log', 'value': 'Log'}
-                        ],
-                    style={'backgroundcolor': '#060606', 'color': '#FEFCFC'},
-                    value='Raw'
-                    )  
-            ],
-            className='two columns',
+            className='four columns',
                     style={'margin-top': '20'}
             )
         ], className="row"
@@ -226,10 +210,8 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
 @app.callback(
         dash.dependencies.Output('tests', 'figure'),
         [dash.dependencies.Input('State', 'value')
-        , dash.dependencies.Input('CumulIncr', 'value')
-        , dash.dependencies.Input('Scale', 'value')
-        ])
-def update_graph_src(statesel, cumulincr, scale):
+        , dash.dependencies.Input('CumulIncr', 'value')])
+def update_graph_src(statesel, cumulincr):
     data = []
     if cumulincr=='Cumulative':
         covsel = covall[Cumulative]
@@ -249,11 +231,6 @@ def update_graph_src(statesel, cumulincr, scale):
         covsel.iloc[:,2:7] = covsel.iloc[:,2:7].div(covsel.population2019, axis=0)
         covsel = covsel.round(4)
         plottitle = 'Number of Tests per Resident'
-        
-    if scale =='Raw':
-        covsel = covsel
-    elif scale=='Log':
-        covsel.iloc[:,2:7] = np.log(covsel.iloc[:,2:7])
     #covsum = covsel.loc[covsel['states'] == statesel]
     #covsum = covsum.groupby([covsum['Date'].dt.date]).sum()
     #covsel.loc[covsel['states'] == 'US'].loc[:,2]=2*covsel.loc[covsel['states'] == 'US'].iloc[:,2]-covsum.iloc[:,2]
@@ -280,10 +257,8 @@ def update_graph_src(statesel, cumulincr, scale):
 @app.callback(
         dash.dependencies.Output('positive', 'figure'),
         [dash.dependencies.Input('State', 'value')
-        , dash.dependencies.Input('CumulIncr', 'value')
-        , dash.dependencies.Input('Scale', 'value')
-        ])
-def update_graph_src(statesel, cumulincr, scale):
+        , dash.dependencies.Input('CumulIncr', 'value')])
+def update_graph_src(statesel, cumulincr):
     data = []
     if cumulincr=='Cumulative':
         covsel = covall[Cumulative]
@@ -301,12 +276,6 @@ def update_graph_src(statesel, cumulincr, scale):
         covsel.iloc[:,2:7] = (covsel.iloc[:,2:7].div(covsel.total, axis=0))
         covsel = covsel.round(4)
         plottitle = 'Number of Positive Tests per Test'
-        
-    if scale =='Raw':
-        covsel = covsel
-    elif scale=='Log':
-        covsel.iloc[:,2:7] = np.log(covsel.iloc[:,2:7])
-        
     for state in statesel:
         data.append({'x': covsel.loc[covall['states'] == state]['Date'], 'y': covsel.loc[covsel['states'] == state].iloc[:,3], 'type': 'line'
                      , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 10}, 'line': {'width' : 3}, 'name': state})
@@ -328,10 +297,8 @@ def update_graph_src(statesel, cumulincr, scale):
 @app.callback(
         dash.dependencies.Output('hospitalized', 'figure'),
         [dash.dependencies.Input('State', 'value')
-        , dash.dependencies.Input('CumulIncr', 'value')
-        , dash.dependencies.Input('Scale', 'value')
-        ])
-def update_graph_src(statesel, cumulincr, scale):
+        , dash.dependencies.Input('CumulIncr', 'value')])
+def update_graph_src(statesel, cumulincr):
     data = []
     if cumulincr=='Cumulative':
         covsel = covall[Cumulative]
@@ -349,12 +316,6 @@ def update_graph_src(statesel, cumulincr, scale):
         covsel.iloc[:,2:7] = covsel.iloc[:,2:7].div(covsel.iloc[:,3], axis=0)
         covsel = covsel.round(4)
         plottitle = 'Number of Hospitalized Patients per Positive Test'
-        
-    if scale =='Raw':
-        covsel = covsel
-    elif scale=='Log':
-        covsel.iloc[:,2:7] = np.log(covsel.iloc[:,2:7])
-        
     for state in statesel:
         data.append({'x': covsel.loc[covall['states'] == state]['Date'], 'y': covsel.loc[covsel['states'] == state].iloc[:,4]
                      , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 10}, 'line': {'width' : 3}, 'name': state})
@@ -376,10 +337,8 @@ def update_graph_src(statesel, cumulincr, scale):
 @app.callback(
         dash.dependencies.Output('death', 'figure'),
         [dash.dependencies.Input('State', 'value')
-        , dash.dependencies.Input('CumulIncr', 'value')
-        , dash.dependencies.Input('Scale', 'value')
-        ])
-def update_graph_src(statesel, cumulincr, scale):
+        , dash.dependencies.Input('CumulIncr', 'value')])
+def update_graph_src(statesel, cumulincr):
     data = []
     if cumulincr=='Cumulative':
         covsel = covall[Cumulative]
@@ -397,12 +356,6 @@ def update_graph_src(statesel, cumulincr, scale):
         covsel.iloc[:,2:7] = covsel.iloc[:,2:7].div(covsel.iloc[:,3], axis=0)
         covsel = covsel.round(4)
         plottitle = 'Number of Deaths per Positive Test'
-    
-    if scale =='Raw':
-        covsel = covsel
-    elif scale=='Log':
-        covsel.iloc[:,2:7] = np.log(covsel.iloc[:,2:7])
-        
     for state in statesel:
         data.append({'x': covsel.loc[covall['states'] == state]['Date'], 'y': covsel.loc[covsel['states'] == state].iloc[:,5]
         , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 10}, 'line': {'width' : 3}, 'name': state})
