@@ -1,9 +1,7 @@
-import os
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import pandas as pd
-
+import plotly.graph_objs as go
 
 ########### Define your variables
 beers=['Chesapeake Stout', 'Snake Dog IPA', 'Imperial Porter', 'Double Dog IPA']
@@ -61,8 +59,5 @@ app.layout = html.Div(children=[
     ]
 )
 
-
-
 if __name__ == '__main__':
     app.run_server()
-    #app.server.run(debug=True, threaded=True)
