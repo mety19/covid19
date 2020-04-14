@@ -5,7 +5,7 @@ urlpop = 'https://github.com/mety19/covid19/raw/master/uspopulation.csv'
 covus = pd.read_csv(urlus)
 covus.loc[covus['states']>1,'states'] = 'US'
 covst = pd.read_csv(urlst)
-uspop = pd.read_csv(urlpop)
+#uspop = pd.read_csv(urlpop)
 
 ''' APP '''
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
