@@ -4,11 +4,10 @@ import dash
 import dash_html_components as html
 #import pandas as pd
 
+''' APP '''
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-
-app.css.append_css({'external_url': 'https://codepen.io/amyoshino/pen/jzXypZ.css'})
+server = app.server
 
 colors = {
     'background': '#060606', #FEFCFC for white
@@ -18,7 +17,6 @@ colors = {
 
 app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
     html.Div([
-            
         html.H1(children='US COVID19 CASE TRACKING', style={
             'textAlign': 'center',
             'color': colors['text']
@@ -30,9 +28,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                 'color': colors['text']
             })
     ], className = "row")
-
 ])
-
 
 if __name__ == '__main__':
     app.run_server()
