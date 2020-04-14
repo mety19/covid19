@@ -77,7 +77,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                             )
                         ], style = {'color': colors['text'],'textAlign': 'center'}, className = "row") 
                 ],
-                className='four columns',
+                className='three columns',
                         style={'margin-top': '20'}
                 ),
             
@@ -112,7 +112,22 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     value='Cumulative'
                     )  
             ],
-            className='four columns',
+            className='one columns',
+                    style={'margin-top': '20'}
+            ),
+        html.Div([
+            html.P('Scale:', style = {'backgroundcolor': '#060606', 'color': '#FEFCFC'}),
+            dcc.RadioItems(
+                    id = 'Scale',
+                    options=[
+                        {'label': 'Raw', 'value': 'Raw'},
+                        {'label': 'Log', 'value': 'Log'}
+                        ],
+                    style={'backgroundcolor': '#060606', 'color': '#FEFCFC'},
+                    value='Raw'
+                    )  
+            ],
+            className='two columns',
                     style={'margin-top': '20'}
             )
         ], className="row"
