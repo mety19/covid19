@@ -1,48 +1,8 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Apr 14 14:06:29 2020
-
-@author: Emma
-"""
-
 #import os
 import dash
 #import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
-
-''' PREPARE DATA '''
-
-# Read data from https://covidtracking.com/ 
-urlus = 'https://covidtracking.com/api/us/daily.csv'
-urlst = 'https://covidtracking.com/api/states/daily.csv'
-covus = pd.read_csv(urlus)
-covus.loc[covus['states']>1,'states'] = 'US'
-covst = pd.read_csv(urlst)
-
-# The US data does not have a fips column, we add fips = 0
-covus['fips'] = 0
-
-# Select columns that are relevant, same columns for US and states
-# Rename state columns to match US column names
-covus = pd.DataFrame(covus[['dateChecked', 'states', 'positive', 'negative', 'hospitalized', 'death', 'total'
-                            , 'totalTestResults', 'fips', 'deathIncrease', 'hospitalizedIncrease'
-                            , 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease']])
-covst = pd.DataFrame(covst[['dateChecked', 'state', 'positive', 'negative', 'hospitalized', 'death', 'total'
-                            , 'totalTestResults', 'fips', 'deathIncrease', 'hospitalizedIncrease'
-                            , 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease']])
-covst.columns = ['dateChecked', 'states', 'positive', 'negative', 'hospitalized', 'death', 'total'
-                            , 'totalTestResults', 'fips', 'deathIncrease', 'hospitalizedIncrease'
-                            , 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease']
-
-# Append the two dataframes and make date a datatime type 
-covall = covus.append(covst, sort=False)
-covall['Date'] = pd.to_datetime(covall['dateChecked'])
-statesall = covall['states'].unique()
-
-# cumulative and incremental columns
-Cumulative = ['Date', 'states', 'totalTestResults', 'positive', 'hospitalized', 'death', 'total']
-Incremental = ['Date', 'states', 'totalTestResultsIncrease', 'positiveIncrease', 'hospitalizedIncrease', 'deathIncrease', 'total']
 
 
 ''' APP '''
