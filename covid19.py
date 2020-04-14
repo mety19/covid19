@@ -1,3 +1,9 @@
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import pandas as pd
+
+
 # Read data from https://covidtracking.com/ 
 urlus = 'https://covidtracking.com/api/us/daily.csv'
 urlst = 'https://covidtracking.com/api/states/daily.csv'
@@ -5,7 +11,7 @@ urlpop = 'https://github.com/mety19/covid19/raw/master/uspopulation.csv'
 covus = pd.read_csv(urlus)
 covus.loc[covus['states']>1,'states'] = 'US'
 covst = pd.read_csv(urlst)
-#uspop = pd.read_csv(urlpop)
+uspop = pd.read_csv(urlpop)
 
 ''' APP '''
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
