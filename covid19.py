@@ -79,7 +79,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                             )
                         ], style = {'color': colors['text'],'textAlign': 'center'}, className = "row") 
                 ],
-                className='three columns',
+                className='four columns',
                         style={'margin-top': '20'}
                 ),
             
@@ -95,7 +95,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     multi=True
                     )  
                 ],
-                className='four columns',
+                className='five columns',
                         style={'margin-top': '20'}
                 ),
         html.Div([
@@ -112,7 +112,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     value='Cumulative'
                     )  
             ],
-            className='two columns',
+            className='one columns',
                     style={'margin-top': '20'}
             ),
         html.Div([
