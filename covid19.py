@@ -1,5 +1,13 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Apr 14 14:06:29 2020
+
+@author: Emma
+"""
+
+#import os
 import dash
-import dash_core_components as dcc
+#import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 
@@ -38,12 +46,10 @@ Incremental = ['Date', 'states', 'totalTestResultsIncrease', 'positiveIncrease',
 
 
 ''' APP '''
-server = flask.Flask(__name__)
-server.secret_key = os.environ.get('secret_key', str(randint(0, 1000000)))
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets, server=server)
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.css.append_css({'external_url': 'https://codepen.io/amyoshino/pen/jzXypZ.css'})
 
@@ -66,46 +72,11 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                 'textAlign': 'center',
                 'color': colors['text']
             })
-    ], className = "row"),
-    
-     html.Div([
-        html.Div([
-            html.P('Choose State:', style = {'backgroundcolor': '#060606', 'color': '#FEFCFC'}),
-            dcc.Dropdown(
-                    id = 'State',
-                    options=[
-                        {'label': k, 'value': k} for k in statesall
-                        ]
-                    ,
-                    value=['US'],
-                    multi=True
-                    )  
-                ],
-                className='six columns',
-                        style={'margin-top': '10'}
-                ),
-        html.Div([
-            html.P('Choose Values:', style = {'backgroundcolor': '#060606', 'color': '#FEFCFC'}),
-            dcc.RadioItems(
-                    id = 'CumulIncr',
-                    options=[
-                        {'label': 'Cumulative', 'value': 'Cumulative'},
-                        {'label': 'Incremental', 'value': 'Incremental'},
-                        {'label': 'Rate', 'value': 'Rate'}
-                        ],
-                    style={'backgroundcolor': '#060606', 'color': '#FEFCFC'},
-                    value='Cumulative'
-                    )  
-            ],
-            className='six columns',
-                    style={'margin-top': '10'}
-            )
-        ], className="row"
-    )
+    ], className = "row")
+
 ])
 
 
 
 if __name__ == '__main__':
-    #app.run_server(debug=True)
-    app.server.run(debug=True, threaded=True)
+    app.run_server(debug=True)
