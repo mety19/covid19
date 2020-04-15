@@ -223,7 +223,59 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
             ], className="row", style={'margin-top': '20'})
 ])
 
-
+@app.callback(
+        dash.dependencies.Output('tests', 'figure'),
+        [dash.dependencies.Input('State', 'value')
+        , dash.dependencies.Input('CumulIncr', 'value')
+        , dash.dependencies.Input('Scale', 'value')
+        ])
+def update_graph_src(statesel, cumulincr, scale):
+    data = []
+    if cumulincr=='Cumulative':
+        covsel = covall[Cumulative]
+        covsel = covsel.round(2)
+        plottitle = 'Cumulative Number of Tests'
+    elif cumulincr=='Incremental':
+        covsel = covall[Incremental]
+        covsel = covsel.round(2)
+        plottitle = 'Daily Number of Tests'
+    elif cumulincr=='Rate Per Million':
+        covsel = covall[Cumulative]
+        covsel.iloc[:,2:7] = 1000000*covsel.iloc[:,2:7].div(covsel.population2019, axis=0)
+        covsel = covsel.round(0)
+        plottitle = 'Number of Tests per Million Residents'
+    elif cumulincr=='Other Rates':
+        covsel = covall[Cumulative]
+        covsel.iloc[:,2:7] = covsel.iloc[:,2:7].div(covsel.population2019, axis=0)
+        covsel = covsel.round(4)
+        plottitle = 'Number of Tests per Resident'
+        
+    if scale =='Raw':
+        covsel = covsel
+    elif scale=='Log':
+        covsel.iloc[:,2:7] = np.log(covsel.iloc[:,2:7])
+    #covsum = covsel.loc[covsel['states'] == statesel]
+    #covsum = covsum.groupby([covsum['Date'].dt.date]).sum()
+    #covsel.loc[covsel['states'] == 'US'].loc[:,2]=2*covsel.loc[covsel['states'] == 'US'].iloc[:,2]-covsum.iloc[:,2]
+    for state in statesel:
+        data.append({'x': covsel.loc[covsel['states'] == state]['Date'], 'y': covsel.loc[covsel['states'] == state].iloc[:,2], 'type': 'line'
+                     , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 10}, 'line': {'width' : 3}, 'name': state})
+                     #, 'marker' : { "color" : '#095D6E', "size": 30}})                                  
+    figure = {
+            'data': data,
+            'layout': {
+                        'title': plottitle,
+                        'plot_bgcolor': '2A2828',
+                        'paper_bgcolor': '2A2828',
+                        'font': {
+                            'color': colors['text'],
+                            'size' : 16
+                        }
+                    }
+                        
+            #'layout': go.Layout(title='Tests Given Per Day', )
+            }
+    return figure
 
 if __name__ == '__main__':
     app.run_server()
