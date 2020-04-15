@@ -276,6 +276,53 @@ def update_graph_src(statesel, cumulincr, scale):
             #'layout': go.Layout(title='Tests Given Per Day', )
             }
     return figure
-
+@app.callback(
+        dash.dependencies.Output('positive', 'figure'),
+        [dash.dependencies.Input('State', 'value')
+        , dash.dependencies.Input('CumulIncr', 'value')
+        , dash.dependencies.Input('Scale', 'value')
+        ])
+def update_graph_src(statesel, cumulincr, scale):
+    data = []
+    if cumulincr=='Cumulative':
+        covsel = covall[Cumulative]
+        plottitle = 'Cumulative Number of Positive Tests'
+    elif cumulincr=='Incremental':
+        covsel = covall[Incremental]
+        plottitle = 'Daily Number of Positive Tests'
+    elif cumulincr=='Rate Per Million':
+        covsel = covall[Cumulative]
+        covsel.iloc[:,2:7] = 1000000*(covsel.iloc[:,2:7].div(covsel.population2019, axis=0))
+        covsel = covsel.round(0)
+        plottitle = 'Number of Positive Tests per Million Residents'
+    elif cumulincr=='Other Rates':
+        covsel = covall[Cumulative]
+        covsel.iloc[:,2:7] = (covsel.iloc[:,2:7].div(covsel.total, axis=0))
+        covsel = covsel.round(4)
+        plottitle = 'Number of Positive Tests per Test'
+        
+    if scale =='Raw':
+        covsel = covsel
+    elif scale=='Log':
+        covsel.iloc[:,2:7] = np.log(covsel.iloc[:,2:7])
+        
+    for state in statesel:
+        data.append({'x': covsel.loc[covall['states'] == state]['Date'], 'y': covsel.loc[covsel['states'] == state].iloc[:,3], 'type': 'line'
+                     , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 10}, 'line': {'width' : 3}, 'name': state})
+                     #, 'marker' : { "color" : '#095D6E', "size": 30}})                                  
+    figure = {
+            'data': data,
+            'layout': {
+                        'title': plottitle,
+                        'plot_bgcolor': '2A2828',
+                        'paper_bgcolor': '2A2828',
+                        'font': {
+                            'color': colors['text'],
+                            'size' : 16
+                        }
+                    }
+            }
+    return figure
+  
 if __name__ == '__main__':
     app.run_server()
