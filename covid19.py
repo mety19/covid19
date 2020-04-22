@@ -254,28 +254,45 @@ def update_graph_src(statesel, cumulincr, scale):
         covsel = covsel
     elif scale=='Log':
         covsel.iloc[:,2:7] = np.log10(covsel.iloc[:,2:7])
-    #covsum = covsel.loc[covsel['states'] == statesel]
-    #covsum = covsum.groupby([covsum['Date'].dt.date]).sum()
-    #covsel.loc[covsel['states'] == 'US'].loc[:,2]=2*covsel.loc[covsel['states'] == 'US'].iloc[:,2]-covsum.iloc[:,2]
+        
     for state in statesel:
         data.append({'x': covsel.loc[covsel['states'] == state]['Date'], 'y': covsel.loc[covsel['states'] == state].iloc[:,2], 'type': 'line'
                      , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 10}, 'line': {'width' : 3}, 'name': state})
-                     #, 'marker' : { "color" : '#095D6E', "size": 30}})                                  
-    figure = {
-            'data': data,
-            'layout': {
-                        'title': plottitle,
-                        'plot_bgcolor': '2A2828',
-                        'paper_bgcolor': '2A2828',
-                        'font': {
-                            'color': colors['text'],
-                            'size' : 16
+                               
+    if scale == 'Raw':                         
+        figure = {
+                'data': data,
+                'layout': {
+                            'title': plottitle,
+                            'plot_bgcolor': '2A2828',
+                            'paper_bgcolor': '2A2828',
+                            'font': {
+                                'color': colors['text'],
+                                'size' : 16
+                            }
                         }
-                    }
-                        
-            #'layout': go.Layout(title='Tests Given Per Day', )
-            }
-    return figure
+                }
+        return figure
+    
+    elif scale == 'Log':                         
+        figure = {
+                'data': data,
+                'layout': {
+                            'title': plottitle,
+                            'plot_bgcolor': '2A2828',
+                            'paper_bgcolor': '2A2828',
+                            'font': {
+                                'color': colors['text'],
+                                'size' : 16
+                            },
+                            'yaxis': {
+                                    'tickvals': [1,2,3,4,5,6,7,8],
+                                    'ticktext': ['10', '100', '1K', '10K', '100K', '1M', '10M', '100M']
+                                    }
+                        }
+                }
+        return figure
+      
 @app.callback(
         dash.dependencies.Output('positive', 'figure'),
         [dash.dependencies.Input('State', 'value')
@@ -309,20 +326,40 @@ def update_graph_src(statesel, cumulincr, scale):
     for state in statesel:
         data.append({'x': covsel.loc[covall['states'] == state]['Date'], 'y': covsel.loc[covsel['states'] == state].iloc[:,3], 'type': 'line'
                      , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 10}, 'line': {'width' : 3}, 'name': state})
-                     #, 'marker' : { "color" : '#095D6E', "size": 30}})                                  
-    figure = {
-            'data': data,
-            'layout': {
-                        'title': plottitle,
-                        'plot_bgcolor': '2A2828',
-                        'paper_bgcolor': '2A2828',
-                        'font': {
-                            'color': colors['text'],
-                            'size' : 16
+                                
+  if scale == 'Raw':                         
+        figure = {
+                'data': data,
+                'layout': {
+                            'title': plottitle,
+                            'plot_bgcolor': '2A2828',
+                            'paper_bgcolor': '2A2828',
+                            'font': {
+                                'color': colors['text'],
+                                'size' : 16
+                            }
                         }
-                    }
-            }
-    return figure
+                }
+        return figure
+    
+    elif scale == 'Log':                         
+        figure = {
+                'data': data,
+                'layout': {
+                            'title': plottitle,
+                            'plot_bgcolor': '2A2828',
+                            'paper_bgcolor': '2A2828',
+                            'font': {
+                                'color': colors['text'],
+                                'size' : 16
+                            },
+                            'yaxis': {
+                                    'tickvals': [1,2,3,4,5,6,7,8],
+                                    'ticktext': ['10', '100', '1K', '10K', '100K', '1M', '10M', '100M']
+                                    }
+                        }
+                }
+        return figure
   
 @app.callback(
         dash.dependencies.Output('hospitalized', 'figure'),
@@ -357,20 +394,40 @@ def update_graph_src(statesel, cumulincr, scale):
     for state in statesel:
         data.append({'x': covsel.loc[covall['states'] == state]['Date'], 'y': covsel.loc[covsel['states'] == state].iloc[:,4]
                      , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 10}, 'line': {'width' : 3}, 'name': state})
-                     #, 'marker' : { "color" : '#095D6E', "size": 30}})                                  
-    figure = {
-            'data': data,
-            'layout': {
-                        'title': plottitle,
-                        'plot_bgcolor': '2A2828',
-                        'paper_bgcolor': '2A2828',
-                        'font': {
-                            'color': colors['text'],
-                            'size' : 16
+                                  
+    if scale == 'Raw':                         
+        figure = {
+                'data': data,
+                'layout': {
+                            'title': plottitle,
+                            'plot_bgcolor': '2A2828',
+                            'paper_bgcolor': '2A2828',
+                            'font': {
+                                'color': colors['text'],
+                                'size' : 16
+                            }
                         }
-                    }
-            }
-    return figure
+                }
+        return figure
+    
+    elif scale == 'Log':                         
+        figure = {
+                'data': data,
+                'layout': {
+                            'title': plottitle,
+                            'plot_bgcolor': '2A2828',
+                            'paper_bgcolor': '2A2828',
+                            'font': {
+                                'color': colors['text'],
+                                'size' : 16
+                            },
+                            'yaxis': {
+                                    'tickvals': [1,2,3,4,5,6,7,8],
+                                    'ticktext': ['10', '100', '1K', '10K', '100K', '1M', '10M', '100M']
+                                    }
+                        }
+                }
+        return figure
 
 @app.callback(
         dash.dependencies.Output('death', 'figure'),
@@ -405,20 +462,40 @@ def update_graph_src(statesel, cumulincr, scale):
     for state in statesel:
         data.append({'x': covsel.loc[covall['states'] == state]['Date'], 'y': covsel.loc[covsel['states'] == state].iloc[:,5]
         , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 10}, 'line': {'width' : 3}, 'name': state})
-                     #, 'marker' : { "color" : '#095D6E', "size": 30}})                                  
-    figure = {
-            'data': data,
-            'layout': {
-                        'title': plottitle,
-                        'plot_bgcolor': '2A2828',
-                        'paper_bgcolor': '2A2828',
-                        'font': {
-                            'color': colors['text'],
-                            'size' : 16
+                               
+    if scale == 'Raw':                         
+        figure = {
+                'data': data,
+                'layout': {
+                            'title': plottitle,
+                            'plot_bgcolor': '2A2828',
+                            'paper_bgcolor': '2A2828',
+                            'font': {
+                                'color': colors['text'],
+                                'size' : 16
+                            }
                         }
-                    }
-            }
-    return figure
+                }
+        return figure
+    
+    elif scale == 'Log':                         
+        figure = {
+                'data': data,
+                'layout': {
+                            'title': plottitle,
+                            'plot_bgcolor': '2A2828',
+                            'paper_bgcolor': '2A2828',
+                            'font': {
+                                'color': colors['text'],
+                                'size' : 16
+                            },
+                            'yaxis': {
+                                    'tickvals': [1,2,3,4,5,6,7,8],
+                                    'ticktext': ['10', '100', '1K', '10K', '100K', '1M', '10M', '100M']
+                                    }
+                        }
+                }
+        return figure
 
 if __name__ == '__main__':
     app.run_server()
