@@ -327,7 +327,7 @@ def update_graph_src(statesel, cumulincr, scale):
         data.append({'x': covsel.loc[covall['states'] == state]['Date'], 'y': covsel.loc[covsel['states'] == state].iloc[:,3], 'type': 'line'
                      , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 10}, 'line': {'width' : 3}, 'name': state})
                                 
-  if scale == 'Raw':                         
+    if scale == 'Raw':                         
         figure = {
                 'data': data,
                 'layout': {
