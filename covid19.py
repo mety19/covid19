@@ -47,7 +47,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 
 colors = {
-    'background': '#060606', #FEFCFC for white
+    'background': '#030A32', #FEFCFC for white
     'text': '#FEFCFC'  #0E0E0E for black
 }
 
@@ -82,14 +82,14 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                 ),
             
         html.Div([
-            html.P('Choose State:', style = {'backgroundcolor': '#060606', 'color': '#FEFCFC'}),
+            html.P('Choose State:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC'}),
             dcc.Dropdown(
                     id = 'State',
                     options=[
                         {'label': k, 'value': k} for k in statesall
                         ]
                     ,
-                    value=['US'],
+                    value=['US', 'NY'],
                     multi=True
                     )  
                 ],
@@ -99,7 +99,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
             
         
         html.Div([
-            html.P('Choose Values:', style = {'backgroundcolor': '#060606', 'color': '#FEFCFC'}),
+            html.P('Choose Values:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC'}),
             dcc.RadioItems(
                     id = 'CumulIncr',
                     options=[
@@ -108,7 +108,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                         {'label': 'Rate Per Million', 'value': 'Rate Per Million'},
                         {'label': 'Other Rates', 'value': 'Other Rates'}
                         ],
-                    style={'backgroundcolor': '#060606', 'color': '#FEFCFC'},
+                    style={'backgroundcolor': '#030A32', 'color': '#FEFCFC'},
                     value='Cumulative'
                     )  
             ],
@@ -116,14 +116,14 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     style={'margin-top': '20'}
             ),
         html.Div([
-            html.P('Scale:', style = {'backgroundcolor': '#060606', 'color': '#FEFCFC'}),
+            html.P('Scale:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC'}),
             dcc.RadioItems(
                     id = 'Scale',
                     options=[
                         {'label': 'Raw', 'value': 'Raw'},
                         {'label': 'Log', 'value': 'Log'}
                         ],
-                    style={'backgroundcolor': '#060606', 'color': '#FEFCFC'},
+                    style={'backgroundcolor': '#030A32', 'color': '#FEFCFC'},
                     value='Raw'
                     )  
             ],
@@ -141,8 +141,8 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     'data': [],
                     'layout': {
                         'title': 'Tests Given Per Day',
-                        'plot_bgcolor': '2A2828',#colors['background'],
-                        'paper_bgcolor': '2A2828',
+                        'plot_bgcolor': '030A32',#colors['background'],
+                        'paper_bgcolor': '030A32',
                         'font': {
                             'color': colors['text']
                         }
@@ -157,8 +157,8 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     'data': [],
                     'layout': {
                         'title': 'Positive Tests Per Day',
-                        'plot_bgcolor': '2A2828',
-                        'paper_bgcolor': '2A2828',
+                        'plot_bgcolor': '030A32',
+                        'paper_bgcolor': '030A32',
                         'font': {
                             'color': colors['text'],
                         }
@@ -177,8 +177,8 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     'data': [],
                     'layout': {
                         'title': 'Hospitalized Patients Per Day',
-                        'plot_bgcolor': '2A2828',
-                        'paper_bgcolor': '2A2828',
+                        'plot_bgcolor': '030A32',
+                        'paper_bgcolor': '030A32',
                         'font': {
                             'color': colors['text']
                         }
@@ -193,8 +193,8 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     'data': [],
                     'layout': {
                         'title': 'Deaths Per Day',
-                        'plot_bgcolor': '2A2828',
-                        'paper_bgcolor': '2A2828',
+                        'plot_bgcolor': '030A32',
+                        'paper_bgcolor': '030A32',
                         'font': {
                             'color': colors['text']
                         }
@@ -264,8 +264,8 @@ def update_graph_src(statesel, cumulincr, scale):
                 'data': data,
                 'layout': {
                             'title': plottitle,
-                            'plot_bgcolor': '2A2828',
-                            'paper_bgcolor': '2A2828',
+                            'plot_bgcolor': '282D46',
+                            'paper_bgcolor': '282D46',
                             'font': {
                                 'color': colors['text'],
                                 'size' : 16
@@ -279,8 +279,8 @@ def update_graph_src(statesel, cumulincr, scale):
                 'data': data,
                 'layout': {
                             'title': plottitle,
-                            'plot_bgcolor': '2A2828',
-                            'paper_bgcolor': '2A2828',
+                            'plot_bgcolor': '282D46',
+                            'paper_bgcolor': '282D46',
                             'font': {
                                 'color': colors['text'],
                                 'size' : 16
@@ -332,8 +332,8 @@ def update_graph_src(statesel, cumulincr, scale):
                 'data': data,
                 'layout': {
                             'title': plottitle,
-                            'plot_bgcolor': '2A2828',
-                            'paper_bgcolor': '2A2828',
+                            'plot_bgcolor': '282D46',
+                            'paper_bgcolor': '282D46',
                             'font': {
                                 'color': colors['text'],
                                 'size' : 16
@@ -347,8 +347,8 @@ def update_graph_src(statesel, cumulincr, scale):
                 'data': data,
                 'layout': {
                             'title': plottitle,
-                            'plot_bgcolor': '2A2828',
-                            'paper_bgcolor': '2A2828',
+                            'plot_bgcolor': '282D46',
+                            'paper_bgcolor': '282D46',
                             'font': {
                                 'color': colors['text'],
                                 'size' : 16
@@ -400,8 +400,8 @@ def update_graph_src(statesel, cumulincr, scale):
                 'data': data,
                 'layout': {
                             'title': plottitle,
-                            'plot_bgcolor': '2A2828',
-                            'paper_bgcolor': '2A2828',
+                            'plot_bgcolor': '282D46',
+                            'paper_bgcolor': '282D46',
                             'font': {
                                 'color': colors['text'],
                                 'size' : 16
@@ -415,8 +415,8 @@ def update_graph_src(statesel, cumulincr, scale):
                 'data': data,
                 'layout': {
                             'title': plottitle,
-                            'plot_bgcolor': '2A2828',
-                            'paper_bgcolor': '2A2828',
+                            'plot_bgcolor': '282D46',
+                            'paper_bgcolor': '282D46',
                             'font': {
                                 'color': colors['text'],
                                 'size' : 16
@@ -468,8 +468,8 @@ def update_graph_src(statesel, cumulincr, scale):
                 'data': data,
                 'layout': {
                             'title': plottitle,
-                            'plot_bgcolor': '2A2828',
-                            'paper_bgcolor': '2A2828',
+                            'plot_bgcolor': '282D46',
+                            'paper_bgcolor': '282D46',
                             'font': {
                                 'color': colors['text'],
                                 'size' : 16
@@ -483,8 +483,8 @@ def update_graph_src(statesel, cumulincr, scale):
                 'data': data,
                 'layout': {
                             'title': plottitle,
-                            'plot_bgcolor': '2A2828',
-                            'paper_bgcolor': '2A2828',
+                            'plot_bgcolor': '282D46',
+                            'paper_bgcolor': '282D46',
                             'font': {
                                 'color': colors['text'],
                                 'size' : 16
