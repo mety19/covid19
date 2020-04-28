@@ -126,7 +126,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
      html.Div([
         html.Div([
                 html.Div([
-                    html.P('This app plots data referenced in covidtracking.com and https://covid.ourworldindata.org. These datasets have been put together to attempt to aggregate covid testing data in the most accurate way,  and are not necessarily complete in terms of number of tests, cases, hospitalizations or deaths.'
+                        html.P('This app plots data referenced in covidtracking.com and https://covid.ourworldindata.org. These datasets have been put together to attempt to aggregate covid testing data in the most accurate way,  and are not necessarily complete in terms of number of tests, cases, hospitalizations or deaths.'
                            )
                         ], style = {'color': colors['text'], 'textAlign': 'center', 'size': 16}, className = "row"),
 
@@ -146,8 +146,8 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                 ),
                 
         html.Div([
-                html.P('Scope:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC'}),
-                dcc.RadioItems(
+            html.P('Scope:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC'}),
+            dcc.RadioItems(
                     id = 'Scope',
                     options = [
                             {'label': k, 'value': k} for k in all_options.keys()
@@ -155,16 +155,14 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     style={'backgroundcolor': '#030A32', 'color': '#FEFCFC'},
                     value = 'USA'
                     )
-                ], className = 'one columns', style = {'margin-top': '20'}),     
+                ], 
+                className = 'one columns', 
+                        style = {'margin-top': '20'}),     
 
         html.Div([
             html.P('Choose State:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC'}),
             dcc.Dropdown(
                     id = 'State',
-#                    options=[
-#                        {'label': k, 'value': k} for k in all_options.keys()
-#                        ]
-#                    ,
                     value=['US'],
                     multi=True
                     )  
