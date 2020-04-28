@@ -33,8 +33,9 @@ world['totalTestResults'] = world['total']
 world['hospitalizedIncrease'] = 0
 world['negativeIncrease'] = 0
 
-world = pd.DataFrame(world[['dateChecked', 'area', 'states', 'positive', 'negative', 'hospitalized', 'death', 'total', 'totalTestResults', 'fips', 'deathIncrease'
-                 , 'hospitalizedIncrease', 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease']])
+world = pd.DataFrame(world[['dateChecked', 'area', 'states', 'positive', 'negative', 'hospitalized', 'death', 'total'
+                            , 'totalTestResults', 'fips', 'deathIncrease'
+                            , 'hospitalizedIncrease', 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease']])
                 
 
 ''' PREPARE US DATA '''
@@ -402,12 +403,12 @@ def update_graph_src(statesel, cumulincr, scale):
         plottitle = 'Daily Number of Tests'
     elif cumulincr=='Rate Per Million':
         covsel = covall[Cumulative]
-        covsel.iloc[:,2:7] = 1000000*covsel.iloc[:,2:7].div(covsel.population2019, axis=0)
+        covsel.iloc[:,2:7] = 1000000*covsel.iloc[:,2:7].div(covsel.population, axis=0)
         covsel = covsel.round(0)
         plottitle = 'Number of Tests per Million Residents'
     elif cumulincr=='Other Rates':
         covsel = covall[Cumulative]
-        covsel.iloc[:,2:7] = covsel.iloc[:,2:7].div(covsel.population2019, axis=0)
+        covsel.iloc[:,2:7] = covsel.iloc[:,2:7].div(covsel.population, axis=0)
         covsel = covsel.round(4)
         plottitle = 'Number of Tests per Resident'
         
@@ -470,7 +471,7 @@ def update_graph_src(statesel, cumulincr, scale):
         plottitle = 'Daily Number of Positive Tests'
     elif cumulincr=='Rate Per Million':
         covsel = covall[Cumulative]
-        covsel.iloc[:,2:7] = 1000000*(covsel.iloc[:,2:7].div(covsel.population2019, axis=0))
+        covsel.iloc[:,2:7] = 1000000*(covsel.iloc[:,2:7].div(covsel.population, axis=0))
         covsel = covsel.round(0)
         plottitle = 'Number of Positive Tests per Million Residents'
     elif cumulincr=='Other Rates':
@@ -538,7 +539,7 @@ def update_graph_src(statesel, cumulincr, scale):
         plottitle = 'Daily Number of Hospitalized Patients'
     elif cumulincr=='Rate Per Million':
         covsel = covall[Cumulative]
-        covsel.iloc[:,2:7] = 1000000*covsel.iloc[:,2:7].div(covsel.population2019, axis=0)
+        covsel.iloc[:,2:7] = 1000000*covsel.iloc[:,2:7].div(covsel.population, axis=0)
         covsel = covsel.round(0)
         plottitle = 'Number of Hospitalized Patients per Million Residents'
     elif cumulincr=='Other Rates':
@@ -606,7 +607,7 @@ def update_graph_src(statesel, cumulincr, scale):
         plottitle = 'Daily Number Deaths'
     elif cumulincr=='Rate Per Million':
         covsel = covall[Cumulative]
-        covsel.iloc[:,2:7] = 1000000*covsel.iloc[:,2:7].div(covsel.population2019, axis=0)
+        covsel.iloc[:,2:7] = 1000000*covsel.iloc[:,2:7].div(covsel.population, axis=0)
         covsel = covsel.round(0)
         plottitle = 'Number of Deaths per Million Residents'
     elif cumulincr=='Other Rates':
