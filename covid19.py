@@ -17,6 +17,26 @@ world.columns = ['iso_code', 'states', 'dateChecked', 'positive', 'positiveIncre
 
 world = world.sort_values(by=['states', 'dateChecked'])
 
+# Get country list and fill in blanks with previous values
+countryall = world['states'].unique()
+for w in countryall:
+    country = world.loc[world['states']==w]
+    country = country.fillna(method='ffill')
+    world.loc[world['states']==w] = country
+
+# Create missing columns that will be in US data
+world['area'] = 'World'
+world['fips'] = 0
+world['negative'] = 0
+world['hospitalized'] = 0
+world['totalTestResults'] = world['total']
+world['hospitalizedIncrease'] = 0
+world['negativeIncrease'] = 0
+
+world = pd.DataFrame(world[['dateChecked', 'area', 'states', 'positive', 'negative', 'hospitalized', 'death'
+                            , 'total', 'totalTestResults', 'fips', 'deathIncrease', 'hospitalizedIncrease'
+                            , 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease']])
+
 # Read data from https://covidtracking.com/ 
 urlus = 'https://covidtracking.com/api/us/daily.csv'
 urlst = 'https://covidtracking.com/api/states/daily.csv'
