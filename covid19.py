@@ -37,41 +37,68 @@ world = pd.DataFrame(world[['dateChecked', 'area', 'states', 'positive', 'negati
                             , 'total', 'totalTestResults', 'fips', 'deathIncrease', 'hospitalizedIncrease'
                             , 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease']])
 
+
+''' PREPARE US DATA '''
 # Read data from https://covidtracking.com/ 
 urlus = 'https://covidtracking.com/api/us/daily.csv'
 urlst = 'https://covidtracking.com/api/states/daily.csv'
-urlpop = 'https://github.com/mety19/covid19/raw/master/uspopulation.csv'
 covus = pd.read_csv(urlus)
 covus.loc[covus['states']>1,'states'] = 'US'
+
+# Read us and world population data
+urluspop = 'https://github.com/mety19/covid19/raw/master/uspopulation.csv'
 covst = pd.read_csv(urlst)
-uspop = pd.read_csv(urlpop)
+uspop = pd.read_csv(urluspop)
+uspop = uspop.iloc[:, 0:2]
+uspop.columns =['states', 'population']
+
+urlworldpop = 'https://www.worldometers.info/world-population/population-by-country/'
+worldhtml = requests.get(urlworldpop).content
+worldpop_list = pd.read_html(worldhtml)
+worldpop = pd.DataFrame(worldpop_list[-1])
+worldpop = worldpop.iloc[:, 1:3]
+worldpop.columns = ['states', 'population']
+
+pop = uspop.append(worldpop, sort=False)
 
 # The US data does not have a fips column, we add fips = 0
 covus['fips'] = 0
+covus['area'] = 'USA'
+covst['area'] = 'USA'
 
 # Select columns that are relevant, same columns for US and states
 # Rename state columns to match US column names
-covus = pd.DataFrame(covus[['dateChecked', 'states', 'positive', 'negative', 'hospitalized', 'death', 'total'
+covus = pd.DataFrame(covus[['dateChecked', 'area', 'states', 'positive', 'negative', 'hospitalized', 'death', 'total'
                             , 'totalTestResults', 'fips', 'deathIncrease', 'hospitalizedIncrease'
                             , 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease']])
-covst = pd.DataFrame(covst[['dateChecked', 'state', 'positive', 'negative', 'hospitalized', 'death', 'total'
+covst = pd.DataFrame(covst[['dateChecked', 'area', 'state', 'positive', 'negative', 'hospitalized', 'death', 'total'
                             , 'totalTestResults', 'fips', 'deathIncrease', 'hospitalizedIncrease'
                             , 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease']])
-covst.columns = ['dateChecked', 'states', 'positive', 'negative', 'hospitalized', 'death', 'total'
+covst.columns = ['dateChecked', 'area', 'states', 'positive', 'negative', 'hospitalized', 'death', 'total'
                             , 'totalTestResults', 'fips', 'deathIncrease', 'hospitalizedIncrease'
                             , 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease']
 
+
+''' COMBINE WORLD AND US DATA'''
 # Append the two dataframes and make date a datatime type 
-covall = covus.append(covst, sort=False)
-covall['Date'] = pd.to_datetime(covall['dateChecked'])
+world = world.fillna(1)
+worldusa = world.append([covus, covst], sort=False)
+worldusa['Date'] = pd.to_datetime(worldusa['dateChecked'])
 
 # Merge with population data and get state list
-covall = pd.merge(covall, uspop, on='states')
-statesall = covall['states'].unique()
+worldusa = pd.merge(worldusa, pop, on='states')
+
+# Get US state list
+statesall = worldusa[worldusa.area == 'USA']['states'].unique()
+
+# Create dictionary of US states and world country list
+all_options = {'USA': statesall
+               , 'World': countryall}
+covall = worldusa
 
 # cumulative and incremental columns
-Cumulative = ['Date', 'states', 'totalTestResults', 'positive', 'hospitalized', 'death', 'total', 'population2019']
-Incremental = ['Date', 'states', 'totalTestResultsIncrease', 'positiveIncrease', 'hospitalizedIncrease', 'deathIncrease', 'total', 'population2019']
+Cumulative = ['Date', 'states', 'totalTestResults', 'positive', 'hospitalized', 'death', 'total', 'population']
+Incremental = ['Date', 'states', 'totalTestResultsIncrease', 'positiveIncrease', 'hospitalizedIncrease', 'deathIncrease', 'total', 'population']
 
 
 ''' APP '''
@@ -274,12 +301,12 @@ def update_graph_src(statesel, cumulincr, scale):
         plottitle = 'Daily Number of Tests'
     elif cumulincr=='Rate Per Million':
         covsel = covall[Cumulative]
-        covsel.iloc[:,2:7] = 1000000*covsel.iloc[:,2:7].div(covsel.population2019, axis=0)
+        covsel.iloc[:,2:7] = 1000000*covsel.iloc[:,2:7].div(covsel.population, axis=0)
         covsel = covsel.round(0)
         plottitle = 'Number of Tests per Million Residents'
     elif cumulincr=='Other Rates':
         covsel = covall[Cumulative]
-        covsel.iloc[:,2:7] = covsel.iloc[:,2:7].div(covsel.population2019, axis=0)
+        covsel.iloc[:,2:7] = covsel.iloc[:,2:7].div(covsel.population, axis=0)
         covsel = covsel.round(4)
         plottitle = 'Number of Tests per Resident'
         
@@ -342,7 +369,7 @@ def update_graph_src(statesel, cumulincr, scale):
         plottitle = 'Daily Number of Positive Tests'
     elif cumulincr=='Rate Per Million':
         covsel = covall[Cumulative]
-        covsel.iloc[:,2:7] = 1000000*(covsel.iloc[:,2:7].div(covsel.population2019, axis=0))
+        covsel.iloc[:,2:7] = 1000000*(covsel.iloc[:,2:7].div(covsel.population, axis=0))
         covsel = covsel.round(0)
         plottitle = 'Number of Positive Tests per Million Residents'
     elif cumulincr=='Other Rates':
@@ -410,7 +437,7 @@ def update_graph_src(statesel, cumulincr, scale):
         plottitle = 'Daily Number of Hospitalized Patients'
     elif cumulincr=='Rate Per Million':
         covsel = covall[Cumulative]
-        covsel.iloc[:,2:7] = 1000000*covsel.iloc[:,2:7].div(covsel.population2019, axis=0)
+        covsel.iloc[:,2:7] = 1000000*covsel.iloc[:,2:7].div(covsel.population, axis=0)
         covsel = covsel.round(0)
         plottitle = 'Number of Hospitalized Patients per Million Residents'
     elif cumulincr=='Other Rates':
@@ -478,7 +505,7 @@ def update_graph_src(statesel, cumulincr, scale):
         plottitle = 'Daily Number Deaths'
     elif cumulincr=='Rate Per Million':
         covsel = covall[Cumulative]
-        covsel.iloc[:,2:7] = 1000000*covsel.iloc[:,2:7].div(covsel.population2019, axis=0)
+        covsel.iloc[:,2:7] = 1000000*covsel.iloc[:,2:7].div(covsel.population, axis=0)
         covsel = covsel.round(0)
         plottitle = 'Number of Deaths per Million Residents'
     elif cumulincr=='Other Rates':
