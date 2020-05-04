@@ -19,10 +19,10 @@ world = world.sort_values(by=['states', 'dateChecked'])
 
 # Get country list and fill in blanks with previous values
 countryall = world['states'].unique()
-for w in countryall:
-    country = world.loc[world['states']==w]
-    country = country.fillna(method='ffill')
-    world.loc[world['states']==w] = country
+#for w in countryall:
+#    country = world.loc[world['states']==w]
+#    country = country.fillna(method='ffill')
+#    world.loc[world['states']==w] = country
 
 # Create missing columns that will be in US data
 world['area'] = 'World'
