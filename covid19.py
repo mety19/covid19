@@ -5,6 +5,18 @@ import pandas as pd
 import numpy as np
 import requests
 
+''' PREPARE WORLD DATA '''
+# Read data from https://ourworldindata.com/ 
+urlworld = 'https://covid.ourworldindata.org/data/owid-covid-data.csv'
+world = pd.read_csv(urlworld)
+
+# Rename columns and sort data
+world.columns = ['iso_code', 'states', 'dateChecked', 'positive', 'positiveIncrease', 'death', 'deathIncrease', 'positiveMil'
+                 , 'positiveIncreaseMil', 'deathMil', 'deathIncreaseMil', 'total', 'totalTestResultsIncrease', 'totalK'
+                 , 'totalTestResultsIncreaseK', 'testunits']
+
+world = world.sort_values(by=['states', 'dateChecked'])
+
 # Read data from https://covidtracking.com/ 
 urlus = 'https://covidtracking.com/api/us/daily.csv'
 urlst = 'https://covidtracking.com/api/states/daily.csv'
