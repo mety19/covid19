@@ -75,42 +75,24 @@ covst.columns = ['dateChecked', 'area', 'states', 'positive', 'negative', 'hospi
                             , 'totalTestResults', 'fips', 'deathIncrease', 'hospitalizedIncrease'
                             , 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease']
 
-# Read data from https://covidtracking.com/ 
-urlus = 'https://covidtracking.com/api/us/daily.csv'
-urlst = 'https://covidtracking.com/api/states/daily.csv'
-urlpop = 'https://github.com/mety19/covid19/raw/master/uspopulation.csv'
-covus = pd.read_csv(urlus)
-covus.loc[covus['states']>1,'states'] = 'US'
-covst = pd.read_csv(urlst)
-uspop = pd.read_csv(urlpop)
 
-# The US data does not have a fips column, we add fips = 0
-covus['fips'] = 0
 
-# Select columns that are relevant, same columns for US and states
-# Rename state columns to match US column names
-covus = pd.DataFrame(covus[['dateChecked', 'states', 'positive', 'negative', 'hospitalized', 'death', 'total'
-                            , 'totalTestResults', 'fips', 'deathIncrease', 'hospitalizedIncrease'
-                            , 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease']])
-covst = pd.DataFrame(covst[['dateChecked', 'state', 'positive', 'negative', 'hospitalized', 'death', 'total'
-                            , 'totalTestResults', 'fips', 'deathIncrease', 'hospitalizedIncrease'
-                            , 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease']])
-covst.columns = ['dateChecked', 'states', 'positive', 'negative', 'hospitalized', 'death', 'total'
-                            , 'totalTestResults', 'fips', 'deathIncrease', 'hospitalizedIncrease'
-                            , 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease']
-
+''' COMBINE WORLD AND US DATA'''
 # Append the two dataframes and make date a datatime type 
-covall = covus.append(covst, sort=False)
-covall['Date'] = pd.to_datetime(covall['dateChecked'])
+#world = world.fillna(1)
+worldusa = world.append([covus, covst], sort=False)
+worldusa['Date'] = pd.to_datetime(worldusa['dateChecked'])
 
 # Merge with population data and get state list
-covall = pd.merge(covall, uspop, on='states')
-statesall = covall['states'].unique()
-countryall = covall['states'].unique()
+worldusa = pd.merge(worldusa, pop, on='states')
+
+# Get US state list
+statesall = worldusa[worldusa.area == 'USA']['states'].unique()
 
 # Create dictionary of US states and world country list
 all_options = {'USA': statesall
                , 'World': countryall}
+covall = worldusa
 
 # cumulative and incremental columns
 Cumulative = ['Date', 'states', 'totalTestResults', 'positive', 'hospitalized', 'death', 'total', 'population2019']
