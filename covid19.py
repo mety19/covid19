@@ -21,7 +21,7 @@ world = world.sort_values(by=['states', 'dateChecked'])
 countryall = world['states'].unique()
 for w in countryall:
   country = world.loc[world['states']==w]
-  country = country.interpolate() #fillna(method='ffill')
+  country = country.fillna(method='ffill')
   world.loc[world['states']==w] = country
 
 # Create missing columns that will be in US data
