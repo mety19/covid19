@@ -3,10 +3,10 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 import numpy as np
-import requests
+#import requests
 
 ''' PREPARE WORLD DATA '''
-# Read data from https://ourworldindata.com/ 
+# Read data from https://covidtracking.com/ 
 urlworld = 'https://covid.ourworldindata.org/data/owid-covid-data.csv'
 world = pd.read_csv(urlworld)
 
@@ -20,9 +20,9 @@ world = world.sort_values(by=['states', 'dateChecked'])
 # Get country list and fill in blanks with previous values
 countryall = world['states'].unique()
 for w in countryall:
-  country = world.loc[world['states']==w]
-  country = country.fillna(method='ffill')
-  world.loc[world['states']==w] = country
+    country = world.loc[world['states']==w]
+    country = country.fillna(method='ffill')
+    world.loc[world['states']==w] = country
 
 # Create missing columns that will be in US data
 world['area'] = 'World'
@@ -33,10 +33,9 @@ world['totalTestResults'] = world['total']
 world['hospitalizedIncrease'] = 0
 world['negativeIncrease'] = 0
 
-world = pd.DataFrame(world[['dateChecked', 'area', 'states', 'positive', 'negative', 'hospitalized', 'death'
-                            , 'total', 'totalTestResults', 'fips', 'deathIncrease', 'hospitalizedIncrease'
-                            , 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease']])
-
+world = pd.DataFrame(world[['dateChecked', 'area', 'states', 'positive', 'negative', 'hospitalized', 'death', 'total', 'totalTestResults', 'fips', 'deathIncrease'
+                 , 'hospitalizedIncrease', 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease']])
+                
 
 ''' PREPARE US DATA '''
 # Read data from https://covidtracking.com/ 
@@ -52,6 +51,12 @@ uspop = pd.read_csv(urluspop)
 uspop = uspop.iloc[:, 0:2]
 uspop.columns =['states', 'population']
 
+#urlworldpop = 'https://www.worldometers.info/world-population/population-by-country/'
+#worldhtml = requests.get(urlworldpop).content
+#worldpop_list = pd.read_html(worldhtml)
+#worldpop = pd.DataFrame(worldpop_list[-1])
+#worldpop = worldpop.iloc[:, 1:3]
+#worldpop.columns = ['states', 'population']
 urlworldpop = 'https://github.com/mety19/covid19/raw/master/worldpopulation.csv'
 worldpop = pd.read_csv(urlworldpop)
 worldpop.columns = ['states', 'population']
@@ -76,7 +81,6 @@ covst.columns = ['dateChecked', 'area', 'states', 'positive', 'negative', 'hospi
                             , 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease']
 
 
-
 ''' COMBINE WORLD AND US DATA'''
 # Append the two dataframes and make date a datatime type 
 world = world.fillna(1)
@@ -95,14 +99,15 @@ all_options = {'USA': statesall
 covall = worldusa
 
 # cumulative and incremental columns
-Cumulative = ['Date', 'states', 'totalTestResults', 'positive', 'hospitalized', 'death', 'total', 'population2019']
-Incremental = ['Date', 'states', 'totalTestResultsIncrease', 'positiveIncrease', 'hospitalizedIncrease', 'deathIncrease', 'total', 'population2019']
-
+Cumulative = ['Date', 'states', 'totalTestResults', 'positive', 'hospitalized', 'death', 'total', 'population']
+Incremental = ['Date', 'states', 'totalTestResultsIncrease', 'positiveIncrease', 'hospitalizedIncrease', 'deathIncrease', 'total', 'population']
 
 ''' APP '''
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
+
+app.css.append_css({'external_url': 'https://codepen.io/amyoshino/pen/jzXypZ.css'})
 
 colors = {
     'background': '#030A32', #FEFCFC for white
@@ -585,5 +590,8 @@ def update_graph_src(statesel, cumulincr, scale):
                 }
         return figure
 
+
+
 if __name__ == '__main__':
-    app.run_server()
+    app.server.run()
+
