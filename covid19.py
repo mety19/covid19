@@ -79,7 +79,7 @@ covst.columns = ['dateChecked', 'area', 'states', 'positive', 'negative', 'hospi
 
 ''' COMBINE WORLD AND US DATA'''
 # Append the two dataframes and make date a datatime type 
-#world = world.fillna(1)
+world = world.fillna(1)
 worldusa = world.append([covus, covst], sort=False)
 worldusa['Date'] = pd.to_datetime(worldusa['dateChecked'])
 
