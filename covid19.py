@@ -70,6 +70,11 @@ covall['Date'] = pd.to_datetime(covall['dateChecked'])
 # Merge with population data and get state list
 covall = pd.merge(covall, uspop, on='states')
 statesall = covall['states'].unique()
+countryall = covall['states'].unique()
+
+# Create dictionary of US states and world country list
+all_options = {'USA': statesall
+               , 'World': countryall}
 
 # cumulative and incremental columns
 Cumulative = ['Date', 'states', 'totalTestResults', 'positive', 'hospitalized', 'death', 'total', 'population2019']
@@ -93,8 +98,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
         html.H1(children='USA SARS-COV-2 Testing and COVID-19 Tracking', style={
             'textAlign': 'center',
             'color': colors['text']
-            }
-            )
+            })    
     ], className = "row"),
     
  
@@ -102,7 +106,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
      html.Div([
         html.Div([
                 html.Div([
-                    html.P('This app plots the data referenced in covidtracking.com,  which has been put together to attempt to aggregate covid testing data for the US in the most accurate way,  and is not necessarily complete in terms of number of hospitalizations or deaths.'
+                    html.P('This app plots data referenced in covidtracking.com and https://covid.ourworldindata.org. These datasets have been put together to attempt to aggregate covid testing data in the most accurate way,  and are not necessarily complete in terms of number of tests, cases, hospitalizations or deaths.'
                            )
                         ], style = {'color': colors['text'], 'textAlign': 'center', 'size': 16}, className = "row"),
 
@@ -110,29 +114,44 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                         html.A("Data Source: https://covidtracking.com"
                                  , href='https://covidtracking.com/', target="_blank"
                             )
-                        ], style = {'color': colors['text'],'textAlign': 'center'}, className = "row") 
+                        ], style = {'color': colors['text'],'textAlign': 'center'}, className = "row"),
+                html.Div([
+                        html.A("Data Source: https://covid.ourworldindata.org"
+                                 , href='https://covid.ourworldindata.org/', target="_blank"
+                            )
+                        ], style = {'color': colors['text'],'textAlign': 'center'}, className = "row")
                 ],
-                className='three columns',
+                className='four columns',
                         style={'margin-top': '20'}
                 ),
-            
+                
+        html.Div([
+                html.P('Scope:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC'}),
+                dcc.RadioItems(
+                    id = 'Scope',
+                    options = [
+                            {'label': k, 'value': k} for k in all_options.keys()
+                            ],
+                    style={'backgroundcolor': '#030A32', 'color': '#FEFCFC'},
+                    value = 'USA'
+                    )
+                ], className = 'one columns', style = {'margin-top': '20'}),     
+
         html.Div([
             html.P('Choose State:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC'}),
             dcc.Dropdown(
                     id = 'State',
-                    options=[
-                        {'label': k, 'value': k} for k in statesall
-                        ]
-                    ,
-                    value=['US', 'NY'],
+#                    options=[
+#                        {'label': k, 'value': k} for k in all_options.keys()
+#                        ]
+#                    ,
+                    value=['US'],
                     multi=True
                     )  
                 ],
-                className='five columns',
+                className='four columns',
                         style={'margin-top': '20'}
                 ),
-            
-        
         html.Div([
             html.P('Choose Values:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC'}),
             dcc.RadioItems(
@@ -166,9 +185,11 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     style={'margin-top': '20'}
             )
         ], className="row"
-    ),
-   
-  html.Div([
+    ),    
+        
+      
+             
+    html.Div([
         html.Div([
             dcc.Graph(
                 id='tests',
@@ -176,8 +197,8 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     'data': [],
                     'layout': {
                         'title': 'Tests Given Per Day',
-                        'plot_bgcolor': '030A32',#colors['background'],
-                        'paper_bgcolor': '030A32',
+                        'plot_bgcolor': '#030A32',#colors['background'],
+                        'paper_bgcolor': '#030A32',
                         'font': {
                             'color': colors['text']
                         }
@@ -192,8 +213,8 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     'data': [],
                     'layout': {
                         'title': 'Positive Tests Per Day',
-                        'plot_bgcolor': '030A32',
-                        'paper_bgcolor': '030A32',
+                        'plot_bgcolor': '#030A32',
+                        'paper_bgcolor': '#030A32',
                         'font': {
                             'color': colors['text'],
                         }
@@ -212,8 +233,8 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     'data': [],
                     'layout': {
                         'title': 'Hospitalized Patients Per Day',
-                        'plot_bgcolor': '030A32',
-                        'paper_bgcolor': '030A32',
+                        'plot_bgcolor': '#030A32',
+                        'paper_bgcolor': '#030A32',
                         'font': {
                             'color': colors['text']
                         }
@@ -228,8 +249,8 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     'data': [],
                     'layout': {
                         'title': 'Deaths Per Day',
-                        'plot_bgcolor': '030A32',
-                        'paper_bgcolor': '030A32',
+                        'plot_bgcolor': '#030A32',
+                        'paper_bgcolor': '#030A32',
                         'font': {
                             'color': colors['text']
                         }
@@ -239,6 +260,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
         ], className = "six columns")
     ], className = "row", style={'margin-top': '20'}),
 
+    
     html.Div([
             html.P('For questions or comments contact'
                            , style={
@@ -256,8 +278,17 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                                         'color': '#DFD9D9'
                                     })
             ], className="row", style={'margin-top': '20'})
+
 ])
 
+
+@app.callback(
+        dash.dependencies.Output('State', 'options'),
+        [dash.dependencies.Input('Scope', 'value')]
+        )
+def set_scope_option(selected_scope):
+    return [{'label': k, 'value': k} for k in all_options[selected_scope]]
+    
 @app.callback(
         dash.dependencies.Output('tests', 'figure'),
         [dash.dependencies.Input('State', 'value')
@@ -276,12 +307,12 @@ def update_graph_src(statesel, cumulincr, scale):
         plottitle = 'Daily Number of Tests'
     elif cumulincr=='Rate Per Million':
         covsel = covall[Cumulative]
-        covsel.iloc[:,2:7] = 1000000*covsel.iloc[:,2:7].div(covsel.population2019, axis=0)
+        covsel.iloc[:,2:7] = 1000000*covsel.iloc[:,2:7].div(covsel.population, axis=0)
         covsel = covsel.round(0)
         plottitle = 'Number of Tests per Million Residents'
     elif cumulincr=='Other Rates':
         covsel = covall[Cumulative]
-        covsel.iloc[:,2:7] = covsel.iloc[:,2:7].div(covsel.population2019, axis=0)
+        covsel.iloc[:,2:7] = covsel.iloc[:,2:7].div(covsel.population, axis=0)
         covsel = covsel.round(4)
         plottitle = 'Number of Tests per Resident'
         
@@ -344,20 +375,24 @@ def update_graph_src(statesel, cumulincr, scale):
         plottitle = 'Daily Number of Positive Tests'
     elif cumulincr=='Rate Per Million':
         covsel = covall[Cumulative]
-        covsel.iloc[:,2:7] = 1000000*(covsel.iloc[:,2:7].div(covsel.population2019, axis=0))
+        covsel.iloc[:,2:7] = 1000000*(covsel.iloc[:,2:7].div(covsel.population, axis=0))
         covsel = covsel.round(0)
         plottitle = 'Number of Positive Tests per Million Residents'
     elif cumulincr=='Other Rates':
         covsel = covall[Cumulative]
         covsel.iloc[:,2:7] = (covsel.iloc[:,2:7].div(covsel.total, axis=0))
         covsel = covsel.round(4)
+        #if covsel.iloc[:,2:7]>1:
+        #    covsel.iloc[:,2:7]=0
+        covsel.iloc[:,2:7]=covsel.iloc[:,2:7].mask(covsel.iloc[:,2:7].gt(0.99),0)
         plottitle = 'Number of Positive Tests per Test'
         
     if scale =='Raw':
         covsel = covsel
     elif scale=='Log':
         covsel.iloc[:,2:7] = np.log10(covsel.iloc[:,2:7])
-        
+    #    
+    
     for state in statesel:
         data.append({'x': covsel.loc[covall['states'] == state]['Date'], 'y': covsel.loc[covsel['states'] == state].iloc[:,3], 'type': 'line'
                      , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 10}, 'line': {'width' : 3}, 'name': state})
@@ -412,7 +447,7 @@ def update_graph_src(statesel, cumulincr, scale):
         plottitle = 'Daily Number of Hospitalized Patients'
     elif cumulincr=='Rate Per Million':
         covsel = covall[Cumulative]
-        covsel.iloc[:,2:7] = 1000000*covsel.iloc[:,2:7].div(covsel.population2019, axis=0)
+        covsel.iloc[:,2:7] = 1000000*covsel.iloc[:,2:7].div(covsel.population, axis=0)
         covsel = covsel.round(0)
         plottitle = 'Number of Hospitalized Patients per Million Residents'
     elif cumulincr=='Other Rates':
@@ -480,7 +515,7 @@ def update_graph_src(statesel, cumulincr, scale):
         plottitle = 'Daily Number Deaths'
     elif cumulincr=='Rate Per Million':
         covsel = covall[Cumulative]
-        covsel.iloc[:,2:7] = 1000000*covsel.iloc[:,2:7].div(covsel.population2019, axis=0)
+        covsel.iloc[:,2:7] = 1000000*covsel.iloc[:,2:7].div(covsel.population, axis=0)
         covsel = covsel.round(0)
         plottitle = 'Number of Deaths per Million Residents'
     elif cumulincr=='Other Rates':
