@@ -42,6 +42,45 @@ world = pd.DataFrame(world[['dateChecked', 'area', 'states', 'positive', 'negati
 # Read data from https://covidtracking.com/ 
 urlus = 'https://covidtracking.com/api/us/daily.csv'
 urlst = 'https://covidtracking.com/api/states/daily.csv'
+covus = pd.read_csv(urlus)
+covus.loc[covus['states']>1,'states'] = 'US'
+
+# Read us and world population data
+urluspop = 'https://github.com/mety19/covid19/raw/master/uspopulation.csv'
+covst = pd.read_csv(urlst)
+uspop = pd.read_csv(urluspop)
+uspop = uspop.iloc[:, 0:2]
+uspop.columns =['states', 'population']
+
+urlworldpop = 'https://www.worldometers.info/world-population/population-by-country/'
+worldhtml = requests.get(urlworldpop).content
+worldpop_list = pd.read_html(worldhtml)
+worldpop = pd.DataFrame(worldpop_list[-1])
+worldpop = worldpop.iloc[:, 1:3]
+worldpop.columns = ['states', 'population']
+
+pop = uspop.append(worldpop, sort=False)
+
+# The US data does not have a fips column, we add fips = 0
+covus['fips'] = 0
+covus['area'] = 'USA'
+covst['area'] = 'USA'
+
+# Select columns that are relevant, same columns for US and states
+# Rename state columns to match US column names
+covus = pd.DataFrame(covus[['dateChecked', 'area', 'states', 'positive', 'negative', 'hospitalized', 'death', 'total'
+                            , 'totalTestResults', 'fips', 'deathIncrease', 'hospitalizedIncrease'
+                            , 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease']])
+covst = pd.DataFrame(covst[['dateChecked', 'area', 'state', 'positive', 'negative', 'hospitalized', 'death', 'total'
+                            , 'totalTestResults', 'fips', 'deathIncrease', 'hospitalizedIncrease'
+                            , 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease']])
+covst.columns = ['dateChecked', 'area', 'states', 'positive', 'negative', 'hospitalized', 'death', 'total'
+                            , 'totalTestResults', 'fips', 'deathIncrease', 'hospitalizedIncrease'
+                            , 'negativeIncrease', 'positiveIncrease', 'totalTestResultsIncrease']
+
+# Read data from https://covidtracking.com/ 
+urlus = 'https://covidtracking.com/api/us/daily.csv'
+urlst = 'https://covidtracking.com/api/states/daily.csv'
 urlpop = 'https://github.com/mety19/covid19/raw/master/uspopulation.csv'
 covus = pd.read_csv(urlus)
 covus.loc[covus['states']>1,'states'] = 'US'
