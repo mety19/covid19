@@ -52,14 +52,11 @@ uspop = pd.read_csv(urluspop)
 uspop = uspop.iloc[:, 0:2]
 uspop.columns =['states', 'population']
 
-#urlworldpop = 'https://www.worldometers.info/world-population/population-by-country/'
-#worldhtml = requests.get(urlworldpop).content
-#worldpop_list = pd.read_html(worldhtml)
-#worldpop = pd.DataFrame(worldpop_list[-1])
-#worldpop = worldpop.iloc[:, 1:3]
-#worldpop.columns = ['states', 'population']
+urlworldpop = 'https://github.com/mety19/covid19/raw/master/worldpopulation.csv'
+worldpop = pd.read_csv(urlworldpop)
+worldpop.columns = ['states', 'population']
 
-#pop = uspop.append(worldpop, sort=False)
+pop = uspop.append(worldpop, sort=False)
 
 # The US data does not have a fips column, we add fips = 0
 covus['fips'] = 0
