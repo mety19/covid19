@@ -161,7 +161,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                 ], className = 'one columns', style = {'margin-top': '20'}),     
 
         html.Div([
-            html.P('Choose State:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC'}),
+            html.P('Choose State or Country:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC'}),
             dcc.Dropdown(
                     id = 'State',
 #                    options=[
