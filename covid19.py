@@ -10,7 +10,12 @@ import numpy as np
 urlworld = 'https://covid.ourworldindata.org/data/owid-covid-data.csv'
 world = pd.read_csv(urlworld)
 
-# Rename columns and sort data
+# Select World Fields and Rename columns and sort data
+worldfields = ['iso_code', 'location',	'date',	'total_cases', 'new_cases',	'total_deaths',	'new_deaths'
+               , 'total_cases_per_million',	'new_cases_per_million',	'total_deaths_per_million'
+               ,	'new_deaths_per_million', 'total_tests',	'new_tests',	'total_tests_per_thousand'
+               ,	'new_tests_per_thousand', 'tests_units']
+world = world[worldfields]
 world.columns = ['iso_code', 'states', 'dateChecked', 'positive', 'positiveIncrease', 'death', 'deathIncrease', 'positiveMil'
                  , 'positiveIncreaseMil', 'deathMil', 'deathIncreaseMil', 'total', 'totalTestResultsIncrease', 'totalK'
                  , 'totalTestResultsIncreaseK', 'testunits']
