@@ -39,8 +39,8 @@ world = pd.DataFrame(world[['dateChecked', 'area', 'states', 'positive', 'negati
 
 ''' PREPARE US DATA '''
 # Read data from https://covidtracking.com/ 
-urlus = 'https://covidtracking.com/api/us/daily.csv'
-urlst = 'https://covidtracking.com/api/states/daily.csv'
+urlus = 'https://covidtracking.com/api/v1/us/daily.csv'
+urlst = 'https://covidtracking.com/api/v1/states/daily.csv'
 covus = pd.read_csv(urlus)
 covus.loc[covus['states']>1,'states'] = 'US'
 
