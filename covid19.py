@@ -350,8 +350,10 @@ def update_graph_src(statesel, cumulincr, scale):
         covsel.iloc[:,2:7] = np.log10(covsel.iloc[:,2:7])
         
     for state in statesel:
-        data.append({'x': covsel.loc[covsel['states'] == state]['Date'], 'y': covsel.loc[covsel['states'] == state].iloc[:,2], 'type': 'line'
-                     , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 10}, 'line': {'width' : 3}, 'name': state})
+        covstate = pd.DataFrame(covsel.loc[covsel['states'] == state])
+        covstate['MA5test'] = covstate.iloc[:,2].rolling(5, min_periods=1).mean()
+        data.append({'x': covstate['Date'], 'y': covstate['MA5test'], 'type': 'line'
+                     , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 8}, 'line': {'width' : 3}, 'name': state})
                                
     if scale == 'Raw':                         
         figure = {
@@ -422,9 +424,11 @@ def update_graph_src(statesel, cumulincr, scale):
     #    
     
     for state in statesel:
-        data.append({'x': covsel.loc[covall['states'] == state]['Date'], 'y': covsel.loc[covsel['states'] == state].iloc[:,3], 'type': 'line'
-                     , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 10}, 'line': {'width' : 3}, 'name': state})
-                                
+        covstate = pd.DataFrame(covsel.loc[covsel['states'] == state])
+        covstate['MA5positive'] = covstate.iloc[:,3].rolling(5, min_periods=1).mean()
+        data.append({'x': covstate['Date'], 'y': covstate['MA5positive'], 'type': 'line'
+                     , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 8}, 'line': {'width' : 3}, 'name': state})
+        
     if scale == 'Raw':                         
         figure = {
                 'data': data,
@@ -490,8 +494,10 @@ def update_graph_src(statesel, cumulincr, scale):
         covsel.iloc[:,2:7] = np.log10(covsel.iloc[:,2:7])
         
     for state in statesel:
-        data.append({'x': covsel.loc[covall['states'] == state]['Date'], 'y': covsel.loc[covsel['states'] == state].iloc[:,4]
-                     , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 10}, 'line': {'width' : 3}, 'name': state})
+        covstate = pd.DataFrame(covsel.loc[covsel['states'] == state])
+        covstate['MA5hospitalized'] = covstate.iloc[:,4].rolling(5, min_periods=1).mean()
+        data.append({'x': covstate['Date'], 'y': covstate['MA5hospitalized'], 'type': 'line'
+                     , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 8}, 'line': {'width' : 3}, 'name': state})
                                   
     if scale == 'Raw':                         
         figure = {
@@ -558,8 +564,10 @@ def update_graph_src(statesel, cumulincr, scale):
         covsel.iloc[:,2:7] = np.log10(covsel.iloc[:,2:7])
         
     for state in statesel:
-        data.append({'x': covsel.loc[covall['states'] == state]['Date'], 'y': covsel.loc[covsel['states'] == state].iloc[:,5]
-        , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 10}, 'line': {'width' : 3}, 'name': state})
+        covstate = pd.DataFrame(covsel.loc[covsel['states'] == state])
+        covstate['MA5death'] = covstate.iloc[:,5].rolling(5, min_periods=1).mean()
+        data.append({'x': covstate['Date'], 'y': covstate['MA5death'], 'type': 'line'
+                     , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 8}, 'line': {'width' : 3}, 'name': state})
                                
     if scale == 'Raw':                         
         figure = {
