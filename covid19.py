@@ -166,7 +166,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                 ], className = 'one columns', style = {'margin-top': '20'}),     
 
         html.Div([
-            html.P('Choose State or Country:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC'}),
+            html.P('State or Country:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC'}),
             dcc.Dropdown(
                     id = 'State',
 #                    options=[
@@ -181,7 +181,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                         style={'margin-top': '20'}
                 ),
         html.Div([
-            html.P('Choose Values:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC'}),
+            html.P('Values:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC'}),
             dcc.RadioItems(
                     id = 'CumulIncr',
                     options=[
@@ -194,7 +194,24 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     value='Cumulative'
                     )  
             ],
-            className='two columns',
+            className='one columns',
+                    style={'margin-top': '20'}
+            )
+       ,
+        html.Div([
+            html.P('Aggregation:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC'}),
+            dcc.RadioItems(
+                    id = 'MovingAverage',
+                    options=[
+                        {'label': 'None', 'value': 'None'},
+                        {'label': 'Moving Average 3-Day', 'value': 'Moving Average 3-Day'},
+                        {'label': 'Moving Average 7-Day', 'value': 'Moving Average 7-Day'}
+                        ],
+                    style={'backgroundcolor': '#030A32', 'color': '#FEFCFC'},
+                    value='None'
+                    )  
+            ],
+            className='one columns',
                     style={'margin-top': '20'}
             ),
         html.Div([
@@ -203,13 +220,13 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     id = 'Scale',
                     options=[
                         {'label': 'Raw', 'value': 'Raw'},
-                        {'label': 'Log', 'value': 'Log'}
+                        {'label': 'Log10', 'value': 'Log10'}
                         ],
                     style={'backgroundcolor': '#030A32', 'color': '#FEFCFC'},
                     value='Raw'
                     )  
             ],
-            className='one columns',
+            className='two columns',
                     style={'margin-top': '20'}
             )
         ], className="row"
@@ -322,8 +339,9 @@ def set_scope_option(selected_scope):
         [dash.dependencies.Input('State', 'value')
         , dash.dependencies.Input('CumulIncr', 'value')
         , dash.dependencies.Input('Scale', 'value')
+        , dash.dependencies.Input('MovingAverage', 'value')
         ])
-def update_graph_src(statesel, cumulincr, scale):
+def update_graph_src(statesel, cumulincr, scale, movingaverage):
     data = []
     if cumulincr=='Cumulative':
         covsel = covall[Cumulative]
@@ -346,13 +364,18 @@ def update_graph_src(statesel, cumulincr, scale):
         
     if scale =='Raw':
         covsel = covsel
-    elif scale=='Log':
+    elif scale=='Log10':
         covsel.iloc[:,2:7] = np.log10(covsel.iloc[:,2:7])
         
     for state in statesel:
         covstate = pd.DataFrame(covsel.loc[covsel['states'] == state])
-        covstate['MA5test'] = covstate.iloc[:,2].rolling(5, min_periods=1).mean()
-        data.append({'x': covstate['Date'], 'y': covstate['MA5test'], 'type': 'line'
+        if movingaverage =='None':
+            covstate = covstate
+        elif movingaverage == 'Moving Average 3-Day':
+            covstate.iloc[:,2] = covstate.iloc[:,2].rolling(3).mean().shift(-2)
+        elif movingaverage == 'Moving Average 7-Day':
+            covstate.iloc[:,2] = covstate.iloc[:,2].rolling(7).mean().shift(-6)
+        data.append({'x':  covstate.Date, 'y': covstate.iloc[:,2], 'type': 'line'
                      , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 8}, 'line': {'width' : 3}, 'name': state})
                                
     if scale == 'Raw':                         
@@ -370,7 +393,7 @@ def update_graph_src(statesel, cumulincr, scale):
                 }
         return figure
     
-    elif scale == 'Log':                         
+    elif scale == 'Log10':                         
         figure = {
                 'data': data,
                 'layout': {
@@ -394,8 +417,9 @@ def update_graph_src(statesel, cumulincr, scale):
         [dash.dependencies.Input('State', 'value')
         , dash.dependencies.Input('CumulIncr', 'value')
         , dash.dependencies.Input('Scale', 'value')
+        , dash.dependencies.Input('MovingAverage', 'value')
         ])
-def update_graph_src(statesel, cumulincr, scale):
+def update_graph_src(statesel, cumulincr, scale, movingaverage):
     data = []
     if cumulincr=='Cumulative':
         covsel = covall[Cumulative]
@@ -419,14 +443,19 @@ def update_graph_src(statesel, cumulincr, scale):
         
     if scale =='Raw':
         covsel = covsel
-    elif scale=='Log':
+    elif scale=='Log10':
         covsel.iloc[:,2:7] = np.log10(covsel.iloc[:,2:7])
     #    
     
     for state in statesel:
         covstate = pd.DataFrame(covsel.loc[covsel['states'] == state])
-        covstate['MA5positive'] = covstate.iloc[:,3].rolling(5, min_periods=1).mean()
-        data.append({'x': covstate['Date'], 'y': covstate['MA5positive'], 'type': 'line'
+        if movingaverage =='None':
+            covstate = covstate
+        elif movingaverage == 'Moving Average 3-Day':
+            covstate.iloc[:,3] = covstate.iloc[:,3].rolling(3).mean().shift(-2)
+        elif movingaverage == 'Moving Average 7-Day':
+            covstate.iloc[:,3] = covstate.iloc[:,3].rolling(7).mean().shift(-6)
+        data.append({'x':  covstate.Date, 'y': covstate.iloc[:,3], 'type': 'line'
                      , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 8}, 'line': {'width' : 3}, 'name': state})
         
     if scale == 'Raw':                         
@@ -444,7 +473,7 @@ def update_graph_src(statesel, cumulincr, scale):
                 }
         return figure
     
-    elif scale == 'Log':                         
+    elif scale == 'Log10':                         
         figure = {
                 'data': data,
                 'layout': {
@@ -468,8 +497,9 @@ def update_graph_src(statesel, cumulincr, scale):
         [dash.dependencies.Input('State', 'value')
         , dash.dependencies.Input('CumulIncr', 'value')
         , dash.dependencies.Input('Scale', 'value')
+        , dash.dependencies.Input('MovingAverage', 'value')
         ])
-def update_graph_src(statesel, cumulincr, scale):
+def update_graph_src(statesel, cumulincr, scale, movingaverage):
     data = []
     if cumulincr=='Cumulative':
         covsel = covall[Cumulative]
@@ -490,13 +520,18 @@ def update_graph_src(statesel, cumulincr, scale):
         
     if scale =='Raw':
         covsel = covsel
-    elif scale=='Log':
+    elif scale=='Log10':
         covsel.iloc[:,2:7] = np.log10(covsel.iloc[:,2:7])
         
     for state in statesel:
         covstate = pd.DataFrame(covsel.loc[covsel['states'] == state])
-        covstate['MA5hospitalized'] = covstate.iloc[:,4].rolling(5, min_periods=1).mean()
-        data.append({'x': covstate['Date'], 'y': covstate['MA5hospitalized'], 'type': 'line'
+        if movingaverage =='None':
+            covstate = covstate
+        elif movingaverage == 'Moving Average 3-Day':
+            covstate.iloc[:,4] = covstate.iloc[:,4].rolling(3).mean().shift(-2)
+        elif movingaverage == 'Moving Average 7-Day':
+            covstate.iloc[:,4] = covstate.iloc[:,4].rolling(7).mean().shift(-6)
+        data.append({'x':  covstate.Date, 'y': covstate.iloc[:,4], 'type': 'line'
                      , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 8}, 'line': {'width' : 3}, 'name': state})
                                   
     if scale == 'Raw':                         
@@ -514,7 +549,7 @@ def update_graph_src(statesel, cumulincr, scale):
                 }
         return figure
     
-    elif scale == 'Log':                         
+    elif scale == 'Log10':                         
         figure = {
                 'data': data,
                 'layout': {
@@ -538,8 +573,9 @@ def update_graph_src(statesel, cumulincr, scale):
         [dash.dependencies.Input('State', 'value')
         , dash.dependencies.Input('CumulIncr', 'value')
         , dash.dependencies.Input('Scale', 'value')
+        , dash.dependencies.Input('MovingAverage', 'value')
         ])
-def update_graph_src(statesel, cumulincr, scale):
+def update_graph_src(statesel, cumulincr, scale, movingaverage):
     data = []
     if cumulincr=='Cumulative':
         covsel = covall[Cumulative]
@@ -560,13 +596,18 @@ def update_graph_src(statesel, cumulincr, scale):
     
     if scale =='Raw':
         covsel = covsel
-    elif scale=='Log':
+    elif scale=='Log10':
         covsel.iloc[:,2:7] = np.log10(covsel.iloc[:,2:7])
         
     for state in statesel:
         covstate = pd.DataFrame(covsel.loc[covsel['states'] == state])
-        covstate['MA5death'] = covstate.iloc[:,5].rolling(5, min_periods=1).mean()
-        data.append({'x': covstate['Date'], 'y': covstate['MA5death'], 'type': 'line'
+        if movingaverage =='None':
+            covstate = covstate
+        elif movingaverage == 'Moving Average 3-Day':
+            covstate.iloc[:,5] = covstate.iloc[:,5].rolling(3).mean().shift(-2)
+        elif movingaverage == 'Moving Average 7-Day':
+            covstate.iloc[:,5] = covstate.iloc[:,5].rolling(7).mean().shift(-6)
+        data.append({'x':  covstate.Date, 'y': covstate.iloc[:,5], 'type': 'line'
                      , 'mode': 'lines+markers', 'type': 'line', 'marker': {'size': 8}, 'line': {'width' : 3}, 'name': state})
                                
     if scale == 'Raw':                         
@@ -584,7 +625,7 @@ def update_graph_src(statesel, cumulincr, scale):
                 }
         return figure
     
-    elif scale == 'Log':                         
+    elif scale == 'Log10':                         
         figure = {
                 'data': data,
                 'layout': {
