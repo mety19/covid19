@@ -134,7 +134,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
      html.Div([
         html.Div([
                 html.Div([
-                    html.P('This app plots data referenced in covidtracking.com and https://covid.ourworldindata.org. These datasets have been put together to attempt to aggregate covid testing data in the most accurate way,  and are not necessarily complete in terms of number of tests, cases, hospitalizations or deaths.'
+                    html.P('This app plots data referenced in covidtracking.com and covid.ourworldindata.org. These datasets have been put together to attempt to aggregate covid testing data in the most accurate way,  and are not necessarily complete in terms of number of tests, cases, hospitalizations or deaths.'
                            )
                         ], style = {'color': colors['text'], 'textAlign': 'center', 'size': 16}, className = "row"),
 
