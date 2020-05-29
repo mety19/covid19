@@ -194,7 +194,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     value='Cumulative'
                     )  
             ],
-            className='one columns',
+            className='two columns',
                     style={'margin-top': '20'}
             )
        ,
@@ -226,7 +226,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     value='Raw'
                     )  
             ],
-            className='two columns',
+            className='one columns',
                     style={'margin-top': '20'}
             )
         ], className="row"
