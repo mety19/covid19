@@ -123,7 +123,7 @@ colors = {
 app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
     html.Div([
             
-        html.H1(children='World and USA SARS-COV-2 Testing and COVID-19 Tracking', style={
+        html.H1(children='COVID-TRACK: World and USA SARS-COV-2 Testing and COVID-19 Tracking', style={
             'textAlign': 'center',
             'color': colors['text']
             })    
