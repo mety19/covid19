@@ -142,28 +142,38 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
         html.Div([
                 html.Div([
                     html.P('''This app plots data referenced in covidtracking.com and covid.ourworldindata.org. 
-                           These datasets have been put together to attempt to aggregate covid testing data in the most accurate way
+                           These datasets have been put together to attempt to aggregate COVID-19 data in the most accurate way
                            ,  and are not necessarily complete in terms of number of tests, cases, hospitalizations or deaths.'''
                            )
-                        ], style = {'color': colors['text'], 'textAlign': 'center', 'size': 14}, className = "row"),
+                        ], style = {'color': colors['text'], 'textAlign': 'center', 'size': 14}, className = 'row'),
 
                 html.Div([
-                        html.A("Data Source: https://covidtracking.com"
-                                 , href='https://covidtracking.com/', target="_blank"
+                        html.A('Data Source: https://covidtracking.com'
+                                 , href='https://covidtracking.com/', target='_blank'
                             )
-                        ], style = {'color': colors['text'],'textAlign': 'center'}, className = "row"),
+                        ], style = {'textAlign': 'center'}, className = 'row'),
                 html.Div([
-                        html.A("Data Source: https://covid.ourworldindata.org"
-                                 , href='https://covid.ourworldindata.org/', target="_blank"
+                        html.A('Data Source: https://covid.ourworldindata.org'
+                                 , href='https://covid.ourworldindata.org/', target='_blank'
                             )
-                        ], style = {'color': colors['text'],'textAlign': 'center'}, className = "row")
+                        ], style = {'textAlign': 'center'}, className = 'row'),
+                
+                html.Div([html.P('')], style = {'textAlign': 'center'}, className = 'row'),
+                
+                html.Div([
+                        html.A('Description of epidemiology variables'
+                                 , href='https://github.com/mety19/covid19/blob/master/covid-track%20epidemiology%20variables.txt', target='_blank'
+                                 , style = {'color': 'Brown','textAlign': 'center'}
+                            )
+                        ], style = {'textAlign': 'center'}, className = 'row')
+                               
                 ],
-                className='three columns',
+                className='four columns',
                         style={'margin-top': '20'}
                 ),
                 
         html.Div([
-                html.P('Scope:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC'}),
+                html.P('Scope:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC', 'size': 10}),
                 dcc.RadioItems(
                     id = 'Scope',
                     options = [
@@ -178,15 +188,11 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
             html.P('State or Country:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC'}),
             dcc.Dropdown(
                     id = 'State',
-#                    options=[
-#                        {'label': k, 'value': k} for k in all_options.keys()
-#                        ]
-#                    ,
                     value=['United States'],
                     multi=True
                     )  
                 ],
-                className='three columns',
+                className='two columns',
                         style={'margin-top': '20'}
                 ),
         html.Div([
@@ -199,7 +205,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                         {'label': 'Rate Per Million', 'value': 'Rate Per Million'},
                         {'label': 'Other Rates', 'value': 'Other Rates'}
                         ],
-                    style={'backgroundcolor': '#030A32', 'color': '#FEFCFC'},
+                    style={'backgroundcolor': '#030A32', 'color': '#FEFCFC', 'size': 10},
                     value='Cumulative'
                     )  
             ],
@@ -216,7 +222,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                         {'label': 'Moving Average 3-Day', 'value': 'Moving Average 3-Day'},
                         {'label': 'Moving Average 7-Day', 'value': 'Moving Average 7-Day'}
                         ],
-                    style={'backgroundcolor': '#030A32', 'color': '#FEFCFC'},
+                    style={'backgroundcolor': '#030A32', 'color': '#FEFCFC', 'size': 10},
                     value='None'
                     )  
             ],
@@ -224,7 +230,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     style={'margin-top': '20'}
             ),
         html.Div([
-            html.P('Scale:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC'}),
+            html.P('Scale:', style = {'backgroundcolor': '#030A32', 'color': '#FEFCFC', 'size': 10}),
             dcc.RadioItems(
                     id = 'Scale',
                     options=[
@@ -245,6 +251,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
        html.Div([
            html.P('')
            ], className='four columns'),
+       
        html.Div([
            dcc.DatePickerRange(
            id = 'DateChoice',
