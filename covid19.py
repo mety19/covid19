@@ -256,7 +256,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
            dcc.DatePickerRange(
            id = 'DateChoice',
            start_date = dt.datetime(2019, 12, 31),
-           end_date = dt.datetime(2020, 7, 31)
+           end_date = dt.datetime(2020, 12, 31)
            )], className='four columns', style={'text-align': 'center'}),
        html.Div([
            html.P('')
