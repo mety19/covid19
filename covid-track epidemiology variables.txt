@@ -4,6 +4,11 @@ Data Sources
 https://covidtracking.com/
 https://covid.ourworldindata.org/
 
+We select epidemiology variables related to testing, incidence (positive tests), hospitalizations, and death.
+Incidence data is difficult to interpret relative to growth unless we understand the testing rate. 
+In addition, not all cases are equally severe in all places. Hospitalizations and death data convey information 
+about severe cases when data is available.
+
 Cumulative Number of Tests
 Aggregation of all tests up to end date. Check sources for test type by jurisdiction (samples tested, people tested, total tests, viral tests, etc...)
 
