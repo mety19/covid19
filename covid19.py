@@ -201,7 +201,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                     id = 'CumulIncr',
                     options=[
                         {'label': 'Cumulative', 'value': 'Cumulative'},
-                        {'label': 'Incremental', 'value': 'Incremental'},
+                        {'label': 'Daily', 'value': 'Incremental'},
                         {'label': 'Rate Per Million', 'value': 'Rate Per Million'},
                         {'label': 'Other Rates', 'value': 'Other Rates'}
                         ],
