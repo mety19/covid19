@@ -4,24 +4,64 @@ Data Sources
 https://covidtracking.com/
 https://covid.ourworldindata.org/
 
-Cumulative Number of Tests: daily aggregation of all tests up to end date. Check sources for test type by jurisdiction (samples tested, people tested, total tests, viral tests, etc...)
-Cumulative Number of Positive Tests: daily aggregation of all positive tests.
-Cumulative Number of Hospitalized Patients: daily aggregation of hospitalized patients, available in US
-Cumulative Number of Deaths
-Daily Number of Tests
-Daily Number of Positive Tests
-Daily Number of Hospitalized Patients
-Daily Number of Deaths
-Number of Tests per Million Residents
-Number of Positive Tests per Million Residents
-Number of Hospitalized Patients per Million Residents
-Number of Deaths per Million Residents
-Number of Tests per Resident
-Number of Positive Tests per Test
-Number of Hospitalized Patients per Positive Test
-Number of Deaths per Positive Test
-Moving Average 3-Day
-Moving Average 7-Day
-Raw Scale
-Log 10 Scale
+Cumulative Number of Tests
+Aggregation of all tests up to end date. Check sources for test type by jurisdiction (samples tested, people tested, total tests, viral tests, etc...)
 
+Cumulative Number of Positive Tests: 
+Aggregation of all positive tests for COVID-19
+
+Cumulative Number of Hospitalized Patients: 
+Aggregation of hospitalized COVID-19 patients, only available for US states
+
+Cumulative Number of Deaths: 
+Aggregation of number of COVID-19 deaths
+
+Daily Number of Tests: 
+Daily incremental number of tests
+
+Daily Number of Positive Tests: 
+Daily incremental number of positive tests for COVID-19
+
+Daily Number of Hospitalized Patients: 
+Daily incremental number of hospitalized COVID-19 patients
+
+Daily Number of Deaths: 
+Daily incremental number of COVID-19 deaths
+
+Number of Tests per Million Residents: 
+Number of tests normalized to be per million residents
+
+Number of Positive Tests per Million Residents: 
+Number of positive tests for COVID-19 normalized to be per million residents
+
+Number of Hospitalized Patients per Million Residents: 
+Number of hospitalized COVID-19 patients normalized to be per million residents
+
+Number of Deaths per Million Residents: 
+Number of COVID-19 deaths normalized to be per million residents
+
+Number of Tests per Resident: 
+Number of tests divided by population size
+
+Number of Positive Tests per Test: 
+Number of positive tests for COVID-19 divided by number of total tests
+
+Number of Hospitalized Patients per Positive Test: 
+Number of hospitalized COVID-19 patients divided by number of positive tests
+
+Number of Deaths per Positive Test: 
+Number of COVID-19 deaths divided by number of positive tests
+
+
+
+Moving Average 3-Day
+Average over previous three days including current date
+
+Moving Average 7-Day
+Average over previous seven days including current date
+
+Raw Scale
+No transformation
+
+Log 10 Scale
+Base 10 logarithm transformation
