@@ -142,12 +142,8 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
         html.Div([
                 html.Div([
                     html.P('''This app plots data referenced in covidtracking.com and covid.ourworldindata.org. 
-                           These datasets have been put together to attempt to aggregate COVID-19 related data in 
-                           the most accurate way and are not necessarily complete in terms of number of tests, cases, hospitalizations, 
-                           or deaths. We selected epidemiology variables related to testing, incidence, hospitalizations, and death since 
-                           incidence data is difficult to interpret relative to growth unless we understand the testing rate. 
-                           In addition, not all cases are equally severe in all places. Hospitalizations and death data convey information 
-                           about severe cases when data is available.'''
+                           These datasets have been put together to attempt to aggregate covid testing data in the most accurate way
+                           ,  and are not necessarily complete in terms of number of tests, cases, hospitalizations or deaths.'''
                            )
                         ], style = {'color': colors['text'], 'textAlign': 'center', 'size': 14}, className = "row"),
 
