@@ -1,0 +1,27 @@
+DESCRIPTION OF EPIDEMIOLOGY VARIABLES
+
+Data Sources
+https://covidtracking.com/
+https://covid.ourworldindata.org/
+
+Cumulative Number of Tests: daily aggregation of all tests up to end date. Check sources for test type by jurisdiction (samples tested, people tested, total tests, viral tests, etc...)
+Cumulative Number of Positive Tests: daily aggregation of all positive tests.
+Cumulative Number of Hospitalized Patients: daily aggregation of hospitalized patients, available in US
+Cumulative Number of Deaths
+Daily Number of Tests
+Daily Number of Positive Tests
+Daily Number of Hospitalized Patients
+Daily Number of Deaths
+Number of Tests per Million Residents
+Number of Positive Tests per Million Residents
+Number of Hospitalized Patients per Million Residents
+Number of Deaths per Million Residents
+Number of Tests per Resident
+Number of Positive Tests per Test
+Number of Hospitalized Patients per Positive Test
+Number of Deaths per Positive Test
+Moving Average 3-Day
+Moving Average 7-Day
+Raw Scale
+Log 10 Scale
+
