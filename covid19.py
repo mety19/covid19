@@ -163,7 +163,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                 html.Div([
                         html.A('Description of epidemiology variables'
                                  , href='https://github.com/mety19/covid19/blob/master/covid-track%20epidemiology%20variables.txt', target='_blank'
-                                 , style = {'color': 'Brown','textAlign': 'center'}
+                                 , style = {'color': 'Yellow','textAlign': 'center'}
                             )
                         ], style = {'textAlign': 'center'}, className = 'row')
                                
